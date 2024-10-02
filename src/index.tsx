@@ -1,12 +1,7 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
+import App from './App';
+import { OFFERS_COUNT } from './constants';
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
-root.render(
-  <React.StrictMode>
-    <h1>Hello, World!</h1>
-  </React.StrictMode>
-);
+root.render(<App offersCount={OFFERS_COUNT} />);
