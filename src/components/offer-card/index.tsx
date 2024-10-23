@@ -3,13 +3,27 @@ import { AppRoute } from '../../constants';
 import { Offer } from '../../types/offer';
 import { calculateRating } from '../../utils/rating';
 
-interface OfferCardProps extends Offer {}
+interface OfferCardProps extends Offer {
+  onHover?: (id: Offer['id'] | undefined) => void;
+}
 
 export const OfferCard = (props: OfferCardProps) => {
-  const { id, title, price, priceText, isFavorite, type, rating, isPremium, preview } = props;
+  const { id, title, price, isFavorite, type, rating, isPremium, previewImage, onHover } = props;
+
+  const handleMouseEnter = () => {
+    if (onHover) {
+      onHover(id);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (onHover) {
+      onHover(undefined);
+    }
+  };
 
   return (
-    <article className="cities__card place-card">
+    <article className="cities__card place-card" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       {isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
@@ -17,14 +31,14 @@ export const OfferCard = (props: OfferCardProps) => {
       )}
       <div className="cities__image-wrapper place-card__image-wrapper">
         <Link to={`${AppRoute.Offer}${id}`}>
-          <img className="place-card__image" src={preview} width="260" height="200" alt={`${title}`} />
+          <img className="place-card__image" src={previewImage} width="260" height="200" alt={`${title}`} />
         </Link>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">&euro;{price}</b>
-            <span className="place-card__price-text">&#47;&nbsp;{priceText}</span>
+            <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <button
             className={`place-card__bookmark-button button ${isFavorite ? 'place-card__bookmark-button--active' : ''}`}
@@ -45,7 +59,7 @@ export const OfferCard = (props: OfferCardProps) => {
         <h2 className="place-card__name">
           <Link to={`${AppRoute.Offer}${id}`}>{title}</Link>
         </h2>
-        <p className="place-card__type">{type}</p>
+        <p className="place-card__type">{type.slice(0, 1).toUpperCase() + type.slice(1)}</p>
       </div>
     </article>
   );

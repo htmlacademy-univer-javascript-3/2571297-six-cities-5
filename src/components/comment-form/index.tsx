@@ -3,12 +3,15 @@ import { CommentFormState } from './interfaces';
 import { getRatingTitle } from './utils';
 
 const MIN_COMMENT_LENGTH = 50;
+const STARS = [5, 4, 3, 2, 1];
 
 export const CommentForm = () => {
-  const [formData, setFormData] = useState<CommentFormState>({
+  const initialFormState = {
     rating: '',
     review: '',
-  });
+  };
+
+  const [formData, setFormData] = useState<CommentFormState>(initialFormState);
 
   const isSubmitDisabled = !formData.rating.length || formData.review.length < MIN_COMMENT_LENGTH;
 
@@ -34,7 +37,7 @@ export const CommentForm = () => {
         Your review
       </label>
       <div className="reviews__rating-form form__rating">
-        {[5, 4, 3, 2, 1].map((rating) => (
+        {STARS.map((rating) => (
           <Fragment key={rating}>
             <input
               className="form__rating-input visually-hidden"

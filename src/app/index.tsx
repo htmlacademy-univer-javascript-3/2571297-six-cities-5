@@ -22,7 +22,7 @@ const App = (props: AppProps) => {
     <BrowserRouter>
       <Routes>
         <Route path={AppRoute.Home} element={<MainPage offersCount={offersCount} offers={offersMock} />} />
-        <Route path={AppRoute.Offer} element={<OfferPage />} />
+        <Route path={AppRoute.OfferRouter} element={<OfferPage />} />
         <Route
           path={AppRoute.Favorites}
           element={

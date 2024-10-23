@@ -1,9 +1,9 @@
-import { OfferPriceText, OfferType } from '../constants';
+import { OfferType } from '../constants';
+import { Location } from './geo';
 
 type OfferCity = {
   name: string;
-  lat?: number;
-  long?: number;
+  location: Location;
 };
 
 export type Offer = {
@@ -11,11 +11,10 @@ export type Offer = {
   title: string;
   type: OfferType;
   price: number;
-  priceText: OfferPriceText;
   city: OfferCity;
+  location: Location;
   isFavorite: boolean;
   isPremium: boolean;
   rating: 1 | 2 | 3 | 4 | 5;
-  preview: string;
-  images?: string[];
+  previewImage: string;
 };

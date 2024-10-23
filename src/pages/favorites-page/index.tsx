@@ -69,7 +69,7 @@ export const FavoritesPage = (props: FavoritesPageProps) => {
                         </a>
                       </div>
                     </div>
-                    <OffersList offers={cityOffers} favorites />
+                    <OffersList offers={cityOffers} isFavoritesPage />
                   </li>
                 ))}
             </ul>

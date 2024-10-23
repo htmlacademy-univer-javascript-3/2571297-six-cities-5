@@ -5,7 +5,8 @@ export enum AppRoute {
     Home = '/',
     Login = '/login',
     Favorites = '/favorites',
-    Offer = '/offer/:id',
+    OfferRouter = '/offer/:id',
+    Offer = '/offer/',
 }
 
 export enum AuthStatus {
@@ -15,10 +16,6 @@ export enum AuthStatus {
 }
 
 export enum OfferType {
-    Apartment = 'Apartment',
-    Room = 'Room',
-}
-
-export enum OfferPriceText {
-    Night = 'night',
+    Apartment = 'apartment',
+    Room = 'room',
 }
