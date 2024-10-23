@@ -12,13 +12,14 @@ export const OffersList = (props: OffersListProps) => {
   const { offers, isFavoritesPage } = props;
 
   // TODO: Use for map markers
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // @ts-ignore
   const [activeOfferId, setActiveOfferId] = useState<Offer['id'] | undefined>(undefined);
 
   const handleOfferCardHover = (id: Offer['id'] | undefined) => {
     setActiveOfferId(id);
   };
+
+  // eslint-disable-next-line no-console
+  console.log(activeOfferId);
 
   return (
     <div className="cities__places-list places__list tabs__content">
