@@ -1,10 +1,12 @@
-import MainPage from '../pages/main-page';
+import { MainPage } from '../pages/main-page';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import NotFoundPage from '../pages/not-found-page';
-import OfferPage from '../pages/offer-page';
-import FavoritesPage from '../pages/favorites-page';
-import LoginPage from '../pages/login-page';
-import PrivateRoute from '../components/private-route';
+import { NotFoundPage } from '../pages/not-found-page';
+import { OfferPage } from '../pages/offer-page';
+import { FavoritesPage } from '../pages/favorites-page';
+import { LoginPage } from '../pages/login-page';
+import { PrivateRoute } from '../components/private-route';
+import { AppRoute, AuthStatus } from '../constants';
+import { offersMock } from '../mocks/offers';
 
 interface AppProps {
   offersCount: number;
@@ -13,22 +15,23 @@ interface AppProps {
 const App = (props: AppProps) => {
   const { offersCount } = props;
 
-  const isAuth = false; // Temporary
+  // TODO: Get auth status from the server
+  const authStatus = AuthStatus.NoAuth;
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<MainPage offersCount={offersCount} />} />
-        <Route path="/offer/:id" element={<OfferPage />} />
+        <Route path={AppRoute.Home} element={<MainPage offersCount={offersCount} offers={offersMock} />} />
+        <Route path={AppRoute.Offer} element={<OfferPage />} />
         <Route
-          path="/favorites"
+          path={AppRoute.Favorites}
           element={
-            <PrivateRoute isAuth={isAuth}>
-              <FavoritesPage />
+            <PrivateRoute authStatus={authStatus}>
+              <FavoritesPage offers={offersMock.filter((offer) => offer.isFavorite)} />
             </PrivateRoute>
           }
         />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path={AppRoute.Login} element={<LoginPage />} />
         {/* Match any other route */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

@@ -1,11 +1,13 @@
-import { OfferCard } from '../../components';
+import { OffersList } from '../../components/';
+import { Offer } from '../../types/offer';
 
 interface MainPageProps {
   offersCount: number;
+  offers: Offer[];
 }
 
-const MainPage = (props: MainPageProps) => {
-  const { offersCount } = props;
+export const MainPage = (props: MainPageProps) => {
+  const { offersCount, offers } = props;
 
   return (
     <div className="page page--gray page--main">
@@ -103,13 +105,8 @@ const MainPage = (props: MainPageProps) => {
                   </li>
                 </ul>
               </form>
-              <div className="cities__places-list places__list tabs__content">
-                <OfferCard />
-                <OfferCard />
-                <OfferCard />
-                <OfferCard />
-                <OfferCard />
-              </div>
+              {/* TODO: Remove 'Amsterdam' placeholder, when offers will be received from API */}
+              <OffersList offers={offers.filter((offer) => offer.city.name === 'Amsterdam')} />
             </section>
             <div className="cities__right-section">
               <section className="cities__map map"></section>
@@ -120,5 +117,3 @@ const MainPage = (props: MainPageProps) => {
     </div>
   );
 };
-
-export default MainPage;
