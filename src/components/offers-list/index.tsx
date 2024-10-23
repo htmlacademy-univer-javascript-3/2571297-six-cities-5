@@ -13,6 +13,7 @@ export const OffersList = (props: OffersListProps) => {
 
   // TODO: Use for map markers
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // @ts-ignore
   const [activeOfferId, setActiveOfferId] = useState<Offer['id'] | undefined>(undefined);
 
   const handleOfferCardHover = (id: Offer['id'] | undefined) => {
