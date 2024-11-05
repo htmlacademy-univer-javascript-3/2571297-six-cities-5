@@ -3,3 +3,7 @@ export type Location = {
   longitude: number;
   zoom: number;
 };
+
+export type Point = {
+  title: string;
+} & Location;

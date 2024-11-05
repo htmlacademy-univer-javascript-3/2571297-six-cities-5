@@ -8,20 +8,14 @@ import { PrivateRoute } from '../components/private-route';
 import { AppRoute, AuthStatus } from '../constants';
 import { offersMock } from '../mocks/offers';
 
-interface AppProps {
-  offersCount: number;
-}
-
-const App = (props: AppProps) => {
-  const { offersCount } = props;
-
+const App = () => {
   // TODO: Get auth status from the server
   const authStatus = AuthStatus.NoAuth;
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={AppRoute.Home} element={<MainPage offersCount={offersCount} offers={offersMock} />} />
+        <Route path={AppRoute.Home} element={<MainPage offers={offersMock} />} />
         <Route path={AppRoute.OfferRouter} element={<OfferPage />} />
         <Route
           path={AppRoute.Favorites}
