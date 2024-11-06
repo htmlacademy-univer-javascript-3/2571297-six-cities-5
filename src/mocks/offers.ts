@@ -10,13 +10,13 @@ export const offersMock: Offer[] = [
     city: {
       name: 'Amsterdam',
       location: {
-        latitude: 52.35514938496378,
-        longitude: 4.673877537499948,
+        latitude: 52.36786677941715,
+        longitude: 4.903899919541823,
         zoom: 8,
       },
     },
     location: {
-      latitude: 52.35514938496378,
+      latitude: 52.3909553943508,
       longitude: 4.673877537499948,
       zoom: 8,
     },
@@ -33,14 +33,14 @@ export const offersMock: Offer[] = [
     city: {
       name: 'Amsterdam',
       location: {
-        latitude: 52.35514938496378,
-        longitude: 4.673877537499948,
+        latitude: 52.36786677941715,
+        longitude: 4.903899919541823,
         zoom: 8,
       },
     },
     location: {
-      latitude: 52.35514938496378,
-      longitude: 4.673877537499948,
+      latitude: 52.3609553943508,
+      longitude: 4.85309666406198,
       zoom: 8,
     },
     isFavorite: true,
@@ -56,14 +56,14 @@ export const offersMock: Offer[] = [
     city: {
       name: 'Amsterdam',
       location: {
-        latitude: 52.35514938496378,
-        longitude: 4.673877537499948,
+        latitude: 52.36786677941715,
+        longitude: 4.903899919541823,
         zoom: 8,
       },
     },
     location: {
-      latitude: 52.35514938496378,
-      longitude: 4.673877537499948,
+      latitude: 52.3909553943508,
+      longitude: 4.929309666406198,
       zoom: 8,
     },
     isFavorite: false,
@@ -79,42 +79,19 @@ export const offersMock: Offer[] = [
     city: {
       name: 'Amsterdam',
       location: {
-        latitude: 52.35514938496378,
-        longitude: 4.673877537499948,
+        latitude: 52.36786677941715,
+        longitude: 4.903899919541823,
         zoom: 8,
       },
     },
     location: {
-      latitude: 52.35514938496378,
-      longitude: 4.673877537499948,
+      latitude: 52.3809553943508,
+      longitude: 4.939309666406198,
       zoom: 8,
     },
     isFavorite: false,
     isPremium: true,
     rating: 5,
     previewImage: 'img/apartment-03.jpg',
-  },
-  {
-    id: '5',
-    title: 'Wood and stone place',
-    type: OfferType.Room,
-    price: 80,
-    city: {
-      name: 'Amsterdam',
-      location: {
-        latitude: 52.35514938496378,
-        longitude: 4.673877537499948,
-        zoom: 8,
-      },
-    },
-    location: {
-      latitude: 52.35514938496378,
-      longitude: 4.673877537499948,
-      zoom: 8,
-    },
-    isFavorite: true,
-    isPremium: false,
-    rating: 4,
-    previewImage: 'img/room.jpg',
   },
 ];

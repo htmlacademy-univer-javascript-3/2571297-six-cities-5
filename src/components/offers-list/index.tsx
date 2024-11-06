@@ -1,25 +1,21 @@
 import { Offer } from '../../types/offer';
 import { FavoriteCard } from '../';
 import { OfferCard } from '../';
-import { useState } from 'react';
 
 interface OffersListProps {
   offers: Offer[];
   isFavoritesPage?: boolean;
+  setActiveOfferId?: (id: Offer['id'] | undefined) => void;
 }
 
 export const OffersList = (props: OffersListProps) => {
-  const { offers, isFavoritesPage } = props;
-
-  // TODO: Use for map markers
-  const [activeOfferId, setActiveOfferId] = useState<Offer['id'] | undefined>(undefined);
+  const { offers, isFavoritesPage, setActiveOfferId } = props;
 
   const handleOfferCardHover = (id: Offer['id'] | undefined) => {
-    setActiveOfferId(id);
+    if (setActiveOfferId) {
+      setActiveOfferId(id);
+    }
   };
-
-  // eslint-disable-next-line no-console
-  console.log(activeOfferId);
 
   return (
     <div className="cities__places-list places__list tabs__content">

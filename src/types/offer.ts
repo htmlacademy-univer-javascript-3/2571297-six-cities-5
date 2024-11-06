@@ -1,7 +1,7 @@
 import { OfferType } from '../constants';
 import { Location } from './geo';
 
-type OfferCity = {
+export type OfferCity = {
   name: string;
   location: Location;
 };

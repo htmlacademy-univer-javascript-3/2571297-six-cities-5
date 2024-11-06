@@ -1,13 +1,23 @@
-import { OffersList } from '../../components/';
+import { useState } from 'react';
+import { OffersList, Map } from '../../components/';
 import { Offer } from '../../types/offer';
 
 interface MainPageProps {
-  offersCount: number;
   offers: Offer[];
 }
 
 export const MainPage = (props: MainPageProps) => {
-  const { offersCount, offers } = props;
+  const { offers } = props;
+  const offersCount = offers.length;
+
+  const [activeOfferId, setActiveOfferId] = useState<Offer['id'] | undefined>(undefined);
+
+  const activeOfferPoint = offers
+    .filter((offer) => offer.id === activeOfferId)
+    .map((offer) => ({ title: offer.title, ...offer.location }))[0];
+
+  // TODO: Remove 'Amsterdam' placeholder, when offers will be received from API
+  const amsterdamCity = offers[0].city;
 
   return (
     <div className="page page--gray page--main">
@@ -106,10 +116,19 @@ export const MainPage = (props: MainPageProps) => {
                 </ul>
               </form>
               {/* TODO: Remove 'Amsterdam' placeholder, when offers will be received from API */}
-              <OffersList offers={offers.filter((offer) => offer.city.name === 'Amsterdam')} />
+              <OffersList
+                offers={offers.filter((offer) => offer.city.name === amsterdamCity.name)}
+                setActiveOfferId={setActiveOfferId}
+              />
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <section className="cities__map">
+                <Map
+                  city={amsterdamCity}
+                  points={offers.map(({ title, location }) => ({ title, ...location }))}
+                  selectedPoint={activeOfferPoint}
+                />
+              </section>
             </div>
           </div>
         </div>
