@@ -1,14 +1,28 @@
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../constants';
-import { Offer } from '../../types/offer';
+import { Offer, OfferCardType } from '../../types/offer';
 import { calculateRating } from '../../utils/rating';
 
 interface OfferCardProps extends Offer {
+  cardType?: OfferCardType;
   onHover?: (id: Offer['id'] | undefined) => void;
 }
 
 export const OfferCard = (props: OfferCardProps) => {
-  const { id, title, price, isFavorite, type, rating, isPremium, previewImage, onHover } = props;
+  const { id, title, price, isFavorite, type, rating, isPremium, previewImage, onHover, cardType = 'regular' } = props;
+
+  const isNearestCardType = cardType === 'nearest';
+
+  const getClassName = (offerCardType: OfferCardType) => {
+    switch (offerCardType) {
+      case 'favorites':
+        return 'favorites';
+      case 'nearest':
+        return 'near-places';
+      default:
+        return 'cities';
+    }
+  };
 
   const handleMouseEnter = () => {
     if (onHover) {
@@ -29,8 +43,8 @@ export const OfferCard = (props: OfferCardProps) => {
           <span>Premium</span>
         </div>
       )}
-      <div className="cities__image-wrapper place-card__image-wrapper">
-        <Link to={`${AppRoute.Offer}${id}`}>
+      <div className={`${getClassName(cardType)}__image-wrapper place-card__image-wrapper`}>
+        <Link to={`${AppRoute.Offer}${id}`} replace={isNearestCardType}>
           <img className="place-card__image" src={previewImage} width="260" height="200" alt={`${title}`} />
         </Link>
       </div>
@@ -57,7 +71,9 @@ export const OfferCard = (props: OfferCardProps) => {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`${AppRoute.Offer}${id}`}>{title}</Link>
+          <Link to={`${AppRoute.Offer}${id}`} replace={isNearestCardType}>
+            {title}
+          </Link>
         </h2>
         <p className="place-card__type">{type.slice(0, 1).toUpperCase() + type.slice(1)}</p>
       </div>

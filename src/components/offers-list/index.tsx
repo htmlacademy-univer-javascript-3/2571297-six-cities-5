@@ -1,31 +1,38 @@
-import { Offer } from '../../types/offer';
-import { FavoriteCard } from '../';
+import { Offer, OfferCardType } from '../../types/offer';
 import { OfferCard } from '../';
 
 interface OffersListProps {
   offers: Offer[];
-  isFavoritesPage?: boolean;
+  cardType?: OfferCardType;
   setActiveOfferId?: (id: Offer['id'] | undefined) => void;
 }
 
 export const OffersList = (props: OffersListProps) => {
-  const { offers, isFavoritesPage, setActiveOfferId } = props;
+  const { offers, cardType = 'regular', setActiveOfferId } = props;
 
-  const handleOfferCardHover = (id: Offer['id'] | undefined) => {
+  const handleOfferCardActive = (id: Offer['id'] | undefined) => {
     if (setActiveOfferId) {
       setActiveOfferId(id);
     }
   };
 
+  const getClassName = (type: OfferCardType) => {
+    switch (type) {
+      case 'favorites':
+        return 'favorites__places';
+      case 'nearest':
+        return 'near-places__list places__list';
+      default:
+        return 'cities__places-list places__list tabs__content';
+    }
+  };
+
   return (
-    <div className="cities__places-list places__list tabs__content">
-      {offers.map((offer) =>
-        isFavoritesPage ? (
-          <FavoriteCard key={offer.id} {...offer} />
-        ) : (
-          <OfferCard key={offer.id} {...offer} onHover={handleOfferCardHover} />
-        )
-      )}
+    <div className={getClassName(cardType)}>
+      {offers.length &&
+        offers.map((offer) => (
+          <OfferCard key={offer.id} cardType={cardType} {...offer} onHover={handleOfferCardActive} />
+        ))}
     </div>
   );
 };
