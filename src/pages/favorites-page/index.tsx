@@ -69,7 +69,7 @@ export const FavoritesPage = (props: FavoritesPageProps) => {
                         </a>
                       </div>
                     </div>
-                    <OffersList offers={cityOffers} isFavoritesPage />
+                    <OffersList offers={cityOffers} cardType="favorites" />
                   </li>
                 ))}
             </ul>
