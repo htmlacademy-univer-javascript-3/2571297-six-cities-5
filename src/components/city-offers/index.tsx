@@ -4,6 +4,8 @@ import { OffersList } from '../offers-list';
 import { Map } from '../map';
 import { useSelector } from 'react-redux';
 import { Cities } from '../../constants';
+import { SortingForm } from '../sorting-form';
+import { useSorting } from '../../hooks/use-sorting';
 
 interface CityOffersProps {
   offers: Offer[];
@@ -12,16 +14,17 @@ interface CityOffersProps {
 export const CityOffers = ({ offers }: CityOffersProps) => {
   const activeCityName = useSelector((state: { city: Cities }) => state.city);
   const [activeOfferId, setActiveOfferId] = useState<Offer['id'] | undefined>(undefined);
+  const sortedOffers = useSorting(offers);
 
   const offersCount = offers.length;
 
-  const activeOffer = offers.find((offer) => offer.id === activeOfferId);
+  const activeOffer = sortedOffers.find((offer: Offer) => offer.id === activeOfferId);
   const activeOfferPoint = activeOffer && {
     title: activeOffer.title,
     ...activeOffer.location,
   };
 
-  const points = offers.map((offer) => ({
+  const points = sortedOffers.map((offer: Offer) => ({
     title: offer.title,
     ...offer.location,
   }));
@@ -42,30 +45,8 @@ export const CityOffers = ({ offers }: CityOffersProps) => {
           <b className="places__found">
             {offersCount} places to stay in {activeCityName}
           </b>
-          <form className="places__sorting" action="#" method="get">
-            <span className="places__sorting-caption">Sort by</span>
-            <span className="places__sorting-type" tabIndex={0}>
-              Popular
-              <svg className="places__sorting-arrow" width="7" height="4">
-                <use xlinkHref="#icon-arrow-select"></use>
-              </svg>
-            </span>
-            <ul className="places__options places__options--custom places__options--opened">
-              <li className="places__option places__option--active" tabIndex={0}>
-                Popular
-              </li>
-              <li className="places__option" tabIndex={0}>
-                Price: low to high
-              </li>
-              <li className="places__option" tabIndex={0}>
-                Price: high to low
-              </li>
-              <li className="places__option" tabIndex={0}>
-                Top rated first
-              </li>
-            </ul>
-          </form>
-          <OffersList offers={offers} setActiveOfferId={setActiveOfferId} />
+          <SortingForm />
+          <OffersList offers={sortedOffers} setActiveOfferId={setActiveOfferId} />
         </section>
         <div className="cities__right-section">
           <section className="cities__map">
