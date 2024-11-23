@@ -4,4 +4,6 @@ export { OffersList } from './offers-list';
 export { CommentForm } from './comment-form';
 export { PrivateRoute } from './private-route';
 export { Map } from './map';
-
+export { CitiesList } from './cities-list';
+export { CityOffers } from './city-offers';
+export { ReviewSection } from './review-section';

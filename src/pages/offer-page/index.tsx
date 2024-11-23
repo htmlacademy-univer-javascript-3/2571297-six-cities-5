@@ -1,12 +1,28 @@
-import { OffersList } from '../../components';
-import { ReviewSection } from '../../components/review-section';
-import { offersMock } from '../../mocks/offers';
-import { Map } from '../../components';
+import { OffersList, ReviewSection, Map } from '../../components';
 import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../../constants';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { Offer } from '../../types/offer';
+import { getOffers } from '../../store/action';
 
 export const OfferPage = () => {
   const { id } = useParams<{ id: string }>();
-  const currentOffer = offersMock.find((offer) => offer.id === id);
+  const dispatch = useDispatch();
+  const offers = useSelector((state: { offers: Offer[] }) => state.offers);
+  const currentOffer = offers.find((offer) => offer.id === id);
+
+  useEffect(() => {
+    if (currentOffer) {
+      dispatch(getOffers(currentOffer.city.name));
+    }
+  }, [currentOffer, dispatch]);
+
+  const nearbyOffers = offers
+    .filter((offer) => offer.id !== id && offer.city.name === currentOffer?.city.name)
+    .slice(0, 3);
+
   const activeOfferPoint = currentOffer ? { title: currentOffer.title, ...currentOffer.location } : undefined;
 
   return (
@@ -16,9 +32,9 @@ export const OfferPage = () => {
           <div className="container">
             <div className="header__wrapper">
               <div className="header__left">
-                <a className="header__logo-link" href="main.html">
+                <Link className="header__logo-link" to={AppRoute.Home}>
                   <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
-                </a>
+                </Link>
               </div>
               <nav className="header__nav">
                 <ul className="header__nav-list">
@@ -141,8 +157,8 @@ export const OfferPage = () => {
             <section className="offer__map">
               <Map
                 width="100%"
-                city={currentOffer?.city}
-                points={offersMock.map(({ title, location }) => ({ title, ...location }))}
+                city={currentOffer.city}
+                points={[...nearbyOffers, currentOffer].map(({ title, location }) => ({ title, ...location }))}
                 selectedPoint={activeOfferPoint}
               />
             </section>
@@ -150,7 +166,7 @@ export const OfferPage = () => {
           <div className="container">
             <section className="near-places places">
               <h2 className="near-places__title">Other places in the neighbourhood</h2>
-              <OffersList offers={offersMock.slice(0, 3)} cardType="nearest" />
+              <OffersList offers={nearbyOffers} cardType="nearest" />
             </section>
           </div>
         </main>

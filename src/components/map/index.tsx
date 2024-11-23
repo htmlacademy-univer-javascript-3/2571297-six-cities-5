@@ -9,7 +9,7 @@ import { OfferCity } from '../../types/offer';
 type MapProps = {
   width?: string;
   height?: string;
-  city: OfferCity;
+  city: OfferCity | undefined;
   points: Point[];
   selectedPoint: Point | undefined;
 };
@@ -33,7 +33,15 @@ export const Map = (props: MapProps): JSX.Element => {
   const map = useMap(mapRef, city);
 
   useEffect(() => {
-    if (map) {
+    if (map && city) {
+      map.setView(
+        {
+          lat: city.location.latitude,
+          lng: city.location.longitude,
+        },
+        city.location.zoom
+      );
+
       const markerLayer = layerGroup().addTo(map);
       points.forEach((point) => {
         const marker = new Marker({
@@ -52,7 +60,7 @@ export const Map = (props: MapProps): JSX.Element => {
         map.removeLayer(markerLayer);
       };
     }
-  }, [map, points, selectedPoint]);
+  }, [map, points, selectedPoint, city]);
 
   return <div style={{ width: width, height: height }} ref={mapRef}></div>;
 };

@@ -3,12 +3,12 @@ import { Map, TileLayer } from 'leaflet';
 import { OfferCity } from '../types/offer';
 import { DEFAULT_ZOOM } from '../constants';
 
-export const useMap = (mapRef: MutableRefObject<HTMLElement | null>, city: OfferCity): Map | null => {
+export const useMap = (mapRef: MutableRefObject<HTMLElement | null>, city: OfferCity | undefined): Map | null => {
   const [map, setMap] = useState<Map | null>(null);
   const isRenderedRef = useRef<boolean>(false);
 
   useEffect(() => {
-    if (mapRef.current !== null && !isRenderedRef.current) {
+    if (mapRef.current !== null && !isRenderedRef.current && city) {
       const instance = new Map(mapRef.current, {
         center: {
           lat: city.location.latitude,

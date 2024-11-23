@@ -1,23 +1,19 @@
-import { useState } from 'react';
-import { OffersList, Map } from '../../components/';
+import { CitiesList, CityOffers } from '../../components';
+import { CITIES } from '../../constants';
+import { useDispatch, useSelector } from 'react-redux';
 import { Offer } from '../../types/offer';
+import { Cities } from '../../constants';
+import { getOffers } from '../../store/action';
+import { useEffect } from 'react';
 
-interface MainPageProps {
-  offers: Offer[];
-}
+export const MainPage = () => {
+  const dispatch = useDispatch();
+  const offers = useSelector((state: { offers: Offer[] }) => state.offers);
+  const activeCity = useSelector((state: { city: Cities }) => state.city);
 
-export const MainPage = (props: MainPageProps) => {
-  const { offers } = props;
-  const offersCount = offers.length;
-
-  const [activeOfferId, setActiveOfferId] = useState<Offer['id'] | undefined>(undefined);
-
-  const activeOfferPoint = offers
-    .filter((offer) => offer.id === activeOfferId)
-    .map((offer) => ({ title: offer.title, ...offer.location }))[0];
-
-  // TODO: Remove 'Amsterdam' placeholder, when offers will be received from API
-  const amsterdamCity = offers[0].city;
+  useEffect(() => {
+    dispatch(getOffers(activeCity));
+  }, [activeCity, dispatch]);
 
   return (
     <div className="page page--gray page--main">
@@ -51,87 +47,8 @@ export const MainPage = (props: MainPageProps) => {
 
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
-        <div className="tabs">
-          <section className="locations container">
-            <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
-            </ul>
-          </section>
-        </div>
-        <div className="cities">
-          <div className="cities__places-container container">
-            <section className="cities__places places">
-              <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{offersCount} places to stay in Amsterdam</b>
-              <form className="places__sorting" action="#" method="get">
-                <span className="places__sorting-caption">Sort by</span>
-                <span className="places__sorting-type" tabIndex={0}>
-                  Popular
-                  <svg className="places__sorting-arrow" width="7" height="4">
-                    <use xlinkHref="#icon-arrow-select"></use>
-                  </svg>
-                </span>
-                <ul className="places__options places__options--custom places__options--opened">
-                  <li className="places__option places__option--active" tabIndex={0}>
-                    Popular
-                  </li>
-                  <li className="places__option" tabIndex={0}>
-                    Price: low to high
-                  </li>
-                  <li className="places__option" tabIndex={0}>
-                    Price: high to low
-                  </li>
-                  <li className="places__option" tabIndex={0}>
-                    Top rated first
-                  </li>
-                </ul>
-              </form>
-              {/* TODO: Remove 'Amsterdam' placeholder, when offers will be received from API */}
-              <OffersList
-                offers={offers.filter((offer) => offer.city.name === amsterdamCity.name)}
-                setActiveOfferId={setActiveOfferId}
-              />
-            </section>
-            <div className="cities__right-section">
-              <section className="cities__map">
-                <Map
-                  city={amsterdamCity}
-                  points={offers.map(({ title, location }) => ({ title, ...location }))}
-                  selectedPoint={activeOfferPoint}
-                />
-              </section>
-            </div>
-          </div>
-        </div>
+        <CitiesList cities={CITIES} />
+        <CityOffers offers={offers} />
       </main>
     </div>
   );
