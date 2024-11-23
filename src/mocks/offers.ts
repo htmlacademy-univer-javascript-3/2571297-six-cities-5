@@ -1,4 +1,4 @@
-import { OfferType } from '../constants.ts';
+import { Cities, OfferType } from '../constants.ts';
 import { Offer } from '../types/offer.ts';
 
 export const offersMock: Offer[] = [
@@ -8,7 +8,7 @@ export const offersMock: Offer[] = [
     type: OfferType.Apartment,
     price: 120,
     city: {
-      name: 'Amsterdam',
+      name: Cities.Amsterdam,
       location: {
         latitude: 52.36786677941715,
         longitude: 4.903899919541823,
@@ -31,7 +31,7 @@ export const offersMock: Offer[] = [
     type: OfferType.Room,
     price: 80,
     city: {
-      name: 'Amsterdam',
+      name: Cities.Amsterdam,
       location: {
         latitude: 52.36786677941715,
         longitude: 4.903899919541823,
@@ -54,7 +54,7 @@ export const offersMock: Offer[] = [
     type: OfferType.Apartment,
     price: 132,
     city: {
-      name: 'Amsterdam',
+      name: Cities.Amsterdam,
       location: {
         latitude: 52.36786677941715,
         longitude: 4.903899919541823,
@@ -77,7 +77,7 @@ export const offersMock: Offer[] = [
     type: OfferType.Apartment,
     price: 180,
     city: {
-      name: 'Amsterdam',
+      name: Cities.Amsterdam,
       location: {
         latitude: 52.36786677941715,
         longitude: 4.903899919541823,
@@ -92,6 +92,328 @@ export const offersMock: Offer[] = [
     isFavorite: false,
     isPremium: true,
     rating: 5,
+    previewImage: 'img/apartment-03.jpg',
+  },
+  {
+    id: '5',
+    title: 'Chic Parisian Studio near Eiffel Tower',
+    type: OfferType.Apartment,
+    price: 160,
+    city: {
+      name: Cities.Paris,
+      location: {
+        latitude: 48.85661,
+        longitude: 2.351499,
+        zoom: 8,
+      },
+    },
+    location: {
+      latitude: 48.85661,
+      longitude: 2.351499,
+      zoom: 8,
+    },
+    isFavorite: false,
+    isPremium: true,
+    rating: 4.8,
+    previewImage: 'img/apartment-01.jpg',
+  },
+  {
+    id: '6',
+    title: 'Cozy Room in Montmartre',
+    type: OfferType.Room,
+    price: 90,
+    city: {
+      name: Cities.Paris,
+      location: {
+        latitude: 48.85661,
+        longitude: 2.351499,
+        zoom: 8,
+      },
+    },
+    location: {
+      latitude: 48.88661,
+      longitude: 2.341499,
+      zoom: 8,
+    },
+    isFavorite: true,
+    isPremium: false,
+    rating: 4.3,
+    previewImage: 'img/room.jpg',
+  },
+  {
+    id: '7',
+    title: 'Luxury Apartment at Champs-Élysées',
+    type: OfferType.Apartment,
+    price: 220,
+    city: {
+      name: Cities.Paris,
+      location: {
+        latitude: 48.85661,
+        longitude: 2.351499,
+        zoom: 8,
+      },
+    },
+    location: {
+      latitude: 48.86661,
+      longitude: 2.361499,
+      zoom: 8,
+    },
+    isFavorite: true,
+    isPremium: true,
+    rating: 4.9,
+    previewImage: 'img/apartment-03.jpg',
+  },
+  {
+    id: '8',
+    title: 'Modern Studio near Cathedral',
+    type: OfferType.Apartment,
+    price: 95,
+    city: {
+      name: Cities.Cologne,
+      location: {
+        latitude: 50.938361,
+        longitude: 6.959974,
+        zoom: 8,
+      },
+    },
+    location: {
+      latitude: 50.938361,
+      longitude: 6.959974,
+      zoom: 8,
+    },
+    isFavorite: false,
+    isPremium: false,
+    rating: 4.5,
+    previewImage: 'img/apartment-02.jpg',
+  },
+  {
+    id: '9',
+    title: 'Riverside Apartment',
+    type: OfferType.Apartment,
+    price: 130,
+    city: {
+      name: Cities.Cologne,
+      location: {
+        latitude: 50.938361,
+        longitude: 6.959974,
+        zoom: 8,
+      },
+    },
+    location: {
+      latitude: 50.948361,
+      longitude: 6.969974,
+      zoom: 8,
+    },
+    isFavorite: true,
+    isPremium: true,
+    rating: 4.7,
+    previewImage: 'img/apartment-01.jpg',
+  },
+  {
+    id: '10',
+    title: 'Cozy Room in Old Town',
+    type: OfferType.Room,
+    price: 70,
+    city: {
+      name: Cities.Cologne,
+      location: {
+        latitude: 50.938361,
+        longitude: 6.959974,
+        zoom: 8,
+      },
+    },
+    location: {
+      latitude: 50.928361,
+      longitude: 6.949974,
+      zoom: 8,
+    },
+    isFavorite: false,
+    isPremium: false,
+    rating: 4.2,
+    previewImage: 'img/room.jpg',
+  },
+  {
+    id: '11',
+    title: 'Harbor View Apartment',
+    type: OfferType.Apartment,
+    price: 140,
+    city: {
+      name: Cities.Hamburg,
+      location: {
+        latitude: 53.550341,
+        longitude: 10.000654,
+        zoom: 8,
+      },
+    },
+    location: {
+      latitude: 53.550341,
+      longitude: 10.000654,
+      zoom: 8,
+    },
+    isFavorite: false,
+    isPremium: true,
+    rating: 4.6,
+    previewImage: 'img/apartment-03.jpg',
+  },
+  {
+    id: '12',
+    title: 'Stylish Room in St. Pauli',
+    type: OfferType.Room,
+    price: 85,
+    city: {
+      name: Cities.Hamburg,
+      location: {
+        latitude: 53.550341,
+        longitude: 10.000654,
+        zoom: 8,
+      },
+    },
+    location: {
+      latitude: 53.560341,
+      longitude: 10.010654,
+      zoom: 8,
+    },
+    isFavorite: true,
+    isPremium: false,
+    rating: 4.4,
+    previewImage: 'img/room.jpg',
+  },
+  {
+    id: '13',
+    title: 'Modern Flat in HafenCity',
+    type: OfferType.Apartment,
+    price: 170,
+    city: {
+      name: Cities.Hamburg,
+      location: {
+        latitude: 53.550341,
+        longitude: 10.000654,
+        zoom: 8,
+      },
+    },
+    location: {
+      latitude: 53.540341,
+      longitude: 9.990654,
+      zoom: 8,
+    },
+    isFavorite: false,
+    isPremium: true,
+    rating: 4.8,
+    previewImage: 'img/apartment-02.jpg',
+  },
+  {
+    id: '14',
+    title: 'Grand Place View Studio',
+    type: OfferType.Apartment,
+    price: 150,
+    city: {
+      name: Cities.Brussels,
+      location: {
+        latitude: 50.8505,
+        longitude: 4.3488,
+        zoom: 8,
+      },
+    },
+    location: {
+      latitude: 50.8505,
+      longitude: 4.3488,
+      zoom: 8,
+    },
+    isFavorite: false,
+    isPremium: true,
+    rating: 4.7,
+    previewImage: 'img/apartment-01.jpg',
+  },
+  {
+    id: '15',
+    title: 'Cozy Room near Atomium',
+    type: OfferType.Room,
+    price: 75,
+    city: {
+      name: Cities.Brussels,
+      location: {
+        latitude: 50.8505,
+        longitude: 4.3488,
+        zoom: 8,
+      },
+    },
+    location: {
+      latitude: 50.8605,
+      longitude: 4.3588,
+      zoom: 8,
+    },
+    isFavorite: true,
+    isPremium: false,
+    rating: 4.3,
+    previewImage: 'img/room.jpg',
+  },
+  {
+    id: '16',
+    title: 'Art Nouveau Apartment',
+    type: OfferType.Apartment,
+    price: 180,
+    city: {
+      name: Cities.Brussels,
+      location: {
+        latitude: 50.8505,
+        longitude: 4.3488,
+        zoom: 8,
+      },
+    },
+    location: {
+      latitude: 50.8405,
+      longitude: 4.3388,
+      zoom: 8,
+    },
+    isFavorite: false,
+    isPremium: true,
+    rating: 4.9,
+    previewImage: 'img/apartment-03.jpg',
+  },
+  {
+    id: '17',
+    title: 'Modern Studio in Dusseldorf',
+    type: OfferType.Apartment,
+    price: 130,
+    city: {
+      name: Cities.Dusseldorf,
+      location: {
+        latitude: 51.225402,
+        longitude: 6.776314,
+        zoom: 8,
+      },
+    },
+    location: {
+      latitude: 51.227402,
+      longitude: 6.778314,
+      zoom: 8,
+    },
+    isFavorite: false,
+    isPremium: true,
+    rating: 4.6,
+    previewImage: 'img/apartment-02.jpg',
+  },
+  {
+    id: '18',
+    title: 'Luxury Penthouse in Dusseldorf',
+    type: OfferType.Apartment,
+    price: 250,
+    city: {
+      name: Cities.Dusseldorf,
+      location: {
+        latitude: 51.225402,
+        longitude: 6.776314,
+        zoom: 8,
+      },
+    },
+    location: {
+      latitude: 51.229402,
+      longitude: 6.779314,
+      zoom: 8,
+    },
+    isFavorite: false,
+    isPremium: true,
+    rating: 4.9,
     previewImage: 'img/apartment-03.jpg',
   },
 ];
