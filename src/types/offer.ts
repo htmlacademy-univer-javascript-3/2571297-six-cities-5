@@ -6,7 +6,7 @@ export type OfferCity = {
   location: Location;
 };
 
-export type Offer = {
+export type BaseOffer = {
   id: string;
   title: string;
   type: OfferType;
@@ -16,7 +16,25 @@ export type Offer = {
   isFavorite: boolean;
   isPremium: boolean;
   rating: number;
+};
+
+export type Offer = BaseOffer & {
   previewImage: string;
+};
+
+export type OfferHost = {
+  name: string;
+  avatarUrl: string;
+  isPro: boolean;
+};
+
+export type OfferDetails = BaseOffer & {
+  description: string;
+  bedrooms: number;
+  goods: string[];
+  host: OfferHost;
+  images: string[];
+  maxAdults: number;
 };
 
 export type OfferCardType = 'regular' | 'favorites' | 'nearest';

@@ -1,17 +1,18 @@
 import { Cities } from '../../constants';
-import { useDispatch, useSelector } from 'react-redux';
-import { setActiveCity } from '../../store/action';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/types';
+import { useActions } from '../../store/hooks';
 
 interface CitiesListProps {
   cities: Cities[];
 }
 
 export const CitiesList = ({ cities }: CitiesListProps) => {
-  const dispatch = useDispatch();
-  const activeCity = useSelector((state: { city: Cities }) => state.city);
+  const { setActiveCity } = useActions();
+  const activeCity = useSelector((state: RootState) => state.common.city);
 
   const handleCitySelect = (city: Cities) => {
-    dispatch(setActiveCity(city));
+    setActiveCity(city);
   };
 
   return (

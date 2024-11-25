@@ -3,31 +3,22 @@ import { Offer } from '../../types/offer';
 import { OffersList } from '../offers-list';
 import { Map } from '../map';
 import { useSelector } from 'react-redux';
-import { Cities } from '../../constants';
 import { SortingForm } from '../sorting-form';
 import { useSorting } from '../../hooks/use-sorting';
+import { RootState } from '../../store/types';
 
 interface CityOffersProps {
   offers: Offer[];
 }
 
 export const CityOffers = ({ offers }: CityOffersProps) => {
-  const activeCityName = useSelector((state: { city: Cities }) => state.city);
+  const activeCityName = useSelector((state: RootState) => state.common.city);
   const [activeOfferId, setActiveOfferId] = useState<Offer['id'] | undefined>(undefined);
   const sortedOffers = useSorting(offers);
 
   const offersCount = offers.length;
 
   const activeOffer = sortedOffers.find((offer: Offer) => offer.id === activeOfferId);
-  const activeOfferPoint = activeOffer && {
-    title: activeOffer.title,
-    ...activeOffer.location,
-  };
-
-  const points = sortedOffers.map((offer: Offer) => ({
-    title: offer.title,
-    ...offer.location,
-  }));
 
   const city = useMemo(() => {
     const foundCity = offers.find((offer) => offer.city.name === activeCityName)?.city;
@@ -50,7 +41,7 @@ export const CityOffers = ({ offers }: CityOffersProps) => {
         </section>
         <div className="cities__right-section">
           <section className="cities__map">
-            <Map city={city} points={points} selectedPoint={activeOfferPoint} />
+            <Map city={city} offers={offers} selectedOffer={activeOffer} />
           </section>
         </div>
       </div>

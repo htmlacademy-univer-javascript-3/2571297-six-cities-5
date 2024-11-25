@@ -1,20 +1,21 @@
 import { useState } from 'react';
 import { SortOption, SORT_OPTIONS } from '../../constants';
-import { useDispatch, useSelector } from 'react-redux';
-import { changeSortOption } from '../../store/action';
+import { useSelector } from 'react-redux';
 import { getSortOptionText } from '../../utils/sort';
+import { RootState } from '../../store/types';
+import { useActions } from '../../store/hooks';
 
 export const SortingForm = () => {
   const [isOpened, setIsOpened] = useState(false);
-  const dispatch = useDispatch();
-  const currentSort = useSelector((state: { sortOption: SortOption }) => state.sortOption);
+  const { setSortOption } = useActions();
+  const currentSort = useSelector((state: RootState) => state.common.sortOption);
 
   const handleFormVisibleToggle = () => {
     setIsOpened((prev) => !prev);
   };
 
   const handleSortOptionClick = (option: SortOption) => {
-    dispatch(changeSortOption(option));
+    setSortOption(option);
     setIsOpened(false);
   };
 

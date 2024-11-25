@@ -2,14 +2,18 @@ import { Link } from 'react-router-dom';
 import { AppRoute } from '../../constants';
 import { Offer, OfferCardType } from '../../types/offer';
 import { calculateRating } from '../../utils/rating';
+import { useActions } from '../../store/hooks';
 
-interface OfferCardProps extends Offer {
+interface OfferCardProps {
+  offer: Offer;
   cardType?: OfferCardType;
   onHover?: (id: Offer['id'] | undefined) => void;
 }
 
 export const OfferCard = (props: OfferCardProps) => {
-  const { id, title, price, isFavorite, type, rating, isPremium, previewImage, onHover, cardType = 'regular' } = props;
+  const { offer, onHover, cardType = 'regular' } = props;
+  const { id, title, price, previewImage, isFavorite, isPremium, rating, type } = offer;
+  const { toggleFavorite } = useActions();
 
   const isNearestCardType = cardType === 'nearest';
 
@@ -36,8 +40,16 @@ export const OfferCard = (props: OfferCardProps) => {
     }
   };
 
+  const handleFavoriteClick = () => {
+    toggleFavorite({ offerId: id, status: isFavorite ? 0 : 1 });
+  };
+
   return (
-    <article className="cities__card place-card" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+    <article
+      className={`${getClassName(cardType)}__card place-card`}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       {isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
@@ -57,6 +69,7 @@ export const OfferCard = (props: OfferCardProps) => {
           <button
             className={`place-card__bookmark-button button ${isFavorite ? 'place-card__bookmark-button--active' : ''}`}
             type="button"
+            onClick={handleFavoriteClick}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
