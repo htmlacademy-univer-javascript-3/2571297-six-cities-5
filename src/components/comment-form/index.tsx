@@ -1,11 +1,20 @@
 import { Fragment, useState } from 'react';
 import { CommentFormState } from './interfaces';
 import { getRatingTitle } from './utils';
+import { useActions } from '../../store/hooks';
+import { BaseOffer } from '../../types/offer';
 
 const MIN_COMMENT_LENGTH = 50;
 const STARS = [5, 4, 3, 2, 1];
 
-export const CommentForm = () => {
+type CommentFormProps = {
+  offerId: BaseOffer['id'];
+};
+
+export const CommentForm = ({ offerId }: CommentFormProps) => {
+  const { postComment } = useActions();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const initialFormState = {
     rating: '',
     review: '',
@@ -13,7 +22,7 @@ export const CommentForm = () => {
 
   const [formData, setFormData] = useState<CommentFormState>(initialFormState);
 
-  const isSubmitDisabled = !formData.rating.length || formData.review.length < MIN_COMMENT_LENGTH;
+  const isSubmitDisabled = !formData.rating.length || formData.review.length < MIN_COMMENT_LENGTH || isSubmitting;
 
   const handleFieldChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
@@ -26,9 +35,18 @@ export const CommentForm = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // TODO: Send form data to server
-    // eslint-disable-next-line no-console
-    console.log(formData);
+    setIsSubmitting(true);
+
+    try {
+      postComment({
+        offerId,
+        rating: Number(formData.rating),
+        comment: formData.review,
+      });
+    } finally {
+      setFormData(initialFormState);
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -46,6 +64,7 @@ export const CommentForm = () => {
               id={`${rating}-stars`}
               type="radio"
               onChange={handleFieldChange}
+              disabled={isSubmitting}
             />
             <label
               htmlFor={`${rating}-stars`}
@@ -66,6 +85,7 @@ export const CommentForm = () => {
         value={formData.review}
         onChange={handleFieldChange}
         placeholder="Tell how was your stay, what you like and what can be improved"
+        disabled={isSubmitting}
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">

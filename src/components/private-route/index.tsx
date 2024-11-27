@@ -1,13 +1,19 @@
 import { Navigate } from 'react-router-dom';
-import { AuthStatus } from '../../constants';
+import { useSelector } from 'react-redux';
+import { AuthStatus, AppRoute } from '../../constants';
+import { Spinner } from '../spinner';
+import { RootState } from '../../store/types';
 
-interface PrivateRouteProps {
+type PrivateRouteProps = {
   children: JSX.Element;
-  authStatus: AuthStatus;
-}
+};
 
-export const PrivateRoute = (props: PrivateRouteProps) => {
-  const { children, authStatus } = props;
+export const PrivateRoute = ({ children }: PrivateRouteProps): JSX.Element => {
+  const authorizationStatus = useSelector((state: RootState) => state.auth.authorizationStatus);
 
-  return authStatus === AuthStatus.Auth ? children : <Navigate to="/login" />;
+  if (authorizationStatus === AuthStatus.Unknown) {
+    return <Spinner fullPage />;
+  }
+
+  return authorizationStatus === AuthStatus.Auth ? children : <Navigate to={AppRoute.Login} />;
 };

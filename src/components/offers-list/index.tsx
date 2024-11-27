@@ -31,7 +31,7 @@ export const OffersList = (props: OffersListProps) => {
     <div className={getClassName(cardType)}>
       {offers.length &&
         offers.map((offer) => (
-          <OfferCard key={offer.id} cardType={cardType} {...offer} onHover={handleOfferCardActive} />
+          <OfferCard key={offer.id} cardType={cardType} offer={offer} onHover={handleOfferCardActive} />
         ))}
     </div>
   );

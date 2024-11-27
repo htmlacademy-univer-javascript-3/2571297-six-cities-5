@@ -5,5 +5,6 @@ export type Location = {
 };
 
 export type Point = {
+  id: string;
   title: string;
 } & Location;

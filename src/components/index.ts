@@ -1,5 +1,4 @@
 export { OfferCard } from './offer-card';
-export { FavoriteCard } from './favorite-card';
 export { OffersList } from './offers-list';
 export { CommentForm } from './comment-form';
 export { PrivateRoute } from './private-route';
@@ -7,3 +6,10 @@ export { Map } from './map';
 export { CitiesList } from './cities-list';
 export { CityOffers } from './city-offers';
 export { ReviewSection } from './review-section';
+export { Spinner } from './spinner';
+export { LoginForm } from './login-form';
+export { Header } from './header';
+export { Footer } from './footer';
+export { PageLayout } from './page-layout';
+export { OfferDetails } from './offer-details';
+export { NearbyOffers } from './nearby-offers';
