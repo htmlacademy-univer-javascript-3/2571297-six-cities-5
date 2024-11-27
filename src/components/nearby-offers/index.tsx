@@ -18,15 +18,17 @@ export const NearbyOffers = ({ currentOffer }: NearbyOffersProps) => {
     fetchNearbyOffers({ offerId: currentOffer.id });
   }, [fetchNearbyOffers, currentOffer.id]);
 
+  const slicedOffers = offers.slice(0, 3);
+
   return (
     <>
       <section className="offer__map">
-        <Map width="100%" city={currentOffer.city} offers={offers} selectedOffer={currentOffer} />
+        <Map width="100%" city={currentOffer.city} offers={slicedOffers} selectedOffer={currentOffer} />
       </section>
       <div className="container">
         <section className="near-places places">
           <h2 className="near-places__title">Other places in the neighbourhood</h2>
-          <OffersList offers={offers} cardType="nearest" />
+          <OffersList offers={slicedOffers} cardType="nearest" />
         </section>
       </div>
     </>
