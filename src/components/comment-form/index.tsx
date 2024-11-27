@@ -63,6 +63,7 @@ export const CommentForm = ({ offerId }: CommentFormProps) => {
               value={rating.toString()}
               id={`${rating}-stars`}
               type="radio"
+              checked={formData.rating === rating.toString()}
               onChange={handleFieldChange}
               disabled={isSubmitting}
             />

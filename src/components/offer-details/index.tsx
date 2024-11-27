@@ -30,7 +30,9 @@ export const OfferDetails = ({ offer }: OfferDetailsProps) => {
   } = offer;
 
   const handleFavoriteClick = () => {
-    toggleFavorite({ offerId: id, status: isFavorite ? 0 : 1 });
+    if (authorizationStatus === AuthStatus.Auth) {
+      toggleFavorite({ offerId: id, status: isFavorite ? 0 : 1 });
+    }
   };
 
   return (
