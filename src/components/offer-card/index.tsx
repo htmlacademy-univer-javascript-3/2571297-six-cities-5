@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
-import { AppRoute } from '../../constants';
+import { AppRoute, AuthStatus } from '../../constants';
 import { Offer, OfferCardType } from '../../types/offer';
 import { calculateRating } from '../../utils/rating';
 import { useActions } from '../../store/hooks';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/types';
 
 interface OfferCardProps {
   offer: Offer;
@@ -13,6 +15,7 @@ interface OfferCardProps {
 export const OfferCard = (props: OfferCardProps) => {
   const { offer, onHover, cardType = 'regular' } = props;
   const { id, title, price, previewImage, isFavorite, isPremium, rating, type } = offer;
+  const authorizationStatus = useSelector((state: RootState) => state.auth.authorizationStatus);
   const { toggleFavorite } = useActions();
 
   const isNearestCardType = cardType === 'nearest';
@@ -41,7 +44,9 @@ export const OfferCard = (props: OfferCardProps) => {
   };
 
   const handleFavoriteClick = () => {
-    toggleFavorite({ offerId: id, status: isFavorite ? 0 : 1 });
+    if (authorizationStatus === AuthStatus.Auth) {
+      toggleFavorite({ offerId: id, status: isFavorite ? 0 : 1 });
+    }
   };
 
   return (
