@@ -74,7 +74,7 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload ?? DEFAULT_REQUEST_ERROR;
       });
-  }
+  },
 });
 
 export const authReducer = authSlice.reducer;
