@@ -3,7 +3,7 @@ import { Cities, SortOption, Actions, ApiRoute } from '../constants';
 import { dropToken, handleToken } from '../utils/token';
 import { AuthInfo, UserData } from '../types/auth';
 import { Offer, OfferDetails } from '../types/offer';
-import { ThunkConfig } from './types';
+import { ThunkConfig } from '../types/store';
 import { api } from '../services/api';
 import { Comment } from '../types/comment';
 import { createError } from '../utils/error';

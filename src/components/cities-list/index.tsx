@@ -1,40 +1,43 @@
+import { memo, useCallback, useMemo } from 'react';
 import { Cities } from '../../constants';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/types';
-import { useActions } from '../../store/hooks';
+import { useActions, useAppSelector } from '../../hooks';
+import { selectCommonData } from '../../store/selectors';
+import { CityItem } from './components/city-item';
 
 interface CitiesListProps {
   cities: Cities[];
 }
 
-export const CitiesList = ({ cities }: CitiesListProps) => {
+const CitiesList = memo(({ cities }: CitiesListProps) => {
   const { setActiveCity } = useActions();
-  const activeCity = useSelector((state: RootState) => state.common.city);
+  const activeCity = useAppSelector(selectCommonData).city;
 
-  const handleCitySelect = (city: Cities) => {
+  const handleCitySelect = useCallback((city: Cities) => {
     setActiveCity(city);
-  };
+  }, [setActiveCity]);
+
+  const citiesList = useMemo(() => (
+    cities.map((city) => (
+      <CityItem
+        key={city}
+        city={city}
+        isActive={city === activeCity}
+        onSelect={handleCitySelect}
+      />
+    ))
+  ), [cities, activeCity, handleCitySelect]);
 
   return (
     <div className="tabs">
       <section className="locations container">
         <ul className="locations__list tabs__list">
-          {cities.map((city) => (
-            <li key={city} className="locations__item">
-              <a
-                className={`locations__item-link tabs__item ${city === activeCity ? 'tabs__item--active' : ''}`}
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleCitySelect(city);
-                }}
-              >
-                <span>{city}</span>
-              </a>
-            </li>
-          ))}
+          {citiesList}
         </ul>
       </section>
     </div>
   );
-};
+});
+
+CitiesList.displayName = 'CitiesList';
+
+export { CitiesList };

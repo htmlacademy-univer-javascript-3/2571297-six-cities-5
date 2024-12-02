@@ -1,4 +1,4 @@
-import { useActions } from '../../store/hooks';
+import { useActions } from '../../hooks';
 
 export const SignOutButton = () => {
   const { logout } = useActions();

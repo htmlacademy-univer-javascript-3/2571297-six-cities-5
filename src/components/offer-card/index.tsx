@@ -1,10 +1,10 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AppRoute, AuthStatus } from '../../constants';
 import { Offer, OfferCardType } from '../../types/offer';
 import { calculateRating } from '../../utils/rating';
-import { useActions } from '../../store/hooks';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/types';
+import { useActions, useAppSelector } from '../../hooks';
+import { selectAuthData } from '../../store/selectors';
+import { memo, useMemo } from 'react';
 
 interface OfferCardProps {
   offer: Offer;
@@ -12,24 +12,28 @@ interface OfferCardProps {
   onHover?: (id: Offer['id'] | undefined) => void;
 }
 
-export const OfferCard = (props: OfferCardProps) => {
+const getClassNameByType = (offerCardType: OfferCardType) => {
+  switch (offerCardType) {
+    case 'favorites':
+      return 'favorites';
+    case 'nearest':
+      return 'near-places';
+    default:
+      return 'cities';
+  }
+};
+
+const OfferCard = memo((props: OfferCardProps) => {
   const { offer, onHover, cardType = 'regular' } = props;
   const { id, title, price, previewImage, isFavorite, isPremium, rating, type } = offer;
-  const authorizationStatus = useSelector((state: RootState) => state.auth.authorizationStatus);
+  const { authorizationStatus } = useAppSelector(selectAuthData);
   const { toggleFavorite } = useActions();
+  const navigate = useNavigate();
 
   const isNearestCardType = cardType === 'nearest';
-
-  const getClassName = (offerCardType: OfferCardType) => {
-    switch (offerCardType) {
-      case 'favorites':
-        return 'favorites';
-      case 'nearest':
-        return 'near-places';
-      default:
-        return 'cities';
-    }
-  };
+  const className = useMemo(() => getClassNameByType(cardType), [cardType]);
+  const ratingWidth = useMemo(() => calculateRating(rating), [rating]);
+  const formattedType = useMemo(() => type.slice(0, 1).toUpperCase() + type.slice(1), [type]);
 
   const handleMouseEnter = () => {
     if (onHover) {
@@ -43,15 +47,17 @@ export const OfferCard = (props: OfferCardProps) => {
     }
   };
 
-  const handleFavoriteClick = () => {
+  const handleToggleFavoriteClick = () => {
     if (authorizationStatus === AuthStatus.Auth) {
       toggleFavorite({ offerId: id, status: isFavorite ? 0 : 1 });
+    } else {
+      navigate(AppRoute.Login);
     }
   };
 
   return (
     <article
-      className={`${getClassName(cardType)}__card place-card`}
+      className={`${className}__card place-card`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -60,9 +66,9 @@ export const OfferCard = (props: OfferCardProps) => {
           <span>Premium</span>
         </div>
       )}
-      <div className={`${getClassName(cardType)}__image-wrapper place-card__image-wrapper`}>
+      <div className={`${className}__image-wrapper place-card__image-wrapper`}>
         <Link to={`${AppRoute.Offer}${id}`} replace={isNearestCardType}>
-          <img className="place-card__image" src={previewImage} width="260" height="200" alt={`${title}`} />
+          <img className="place-card__image" src={previewImage} width="260" height="200" alt={title} />
         </Link>
       </div>
       <div className="place-card__info">
@@ -74,7 +80,7 @@ export const OfferCard = (props: OfferCardProps) => {
           <button
             className={`place-card__bookmark-button button ${isFavorite ? 'place-card__bookmark-button--active' : ''}`}
             type="button"
-            onClick={handleFavoriteClick}
+            onClick={handleToggleFavoriteClick}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
@@ -84,7 +90,7 @@ export const OfferCard = (props: OfferCardProps) => {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: `${calculateRating(rating)}%` }}></span>
+            <span style={{ width: `${ratingWidth}%` }}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
@@ -93,8 +99,12 @@ export const OfferCard = (props: OfferCardProps) => {
             {title}
           </Link>
         </h2>
-        <p className="place-card__type">{type.slice(0, 1).toUpperCase() + type.slice(1)}</p>
+        <p className="place-card__type">{formattedType}</p>
       </div>
     </article>
   );
-};
+});
+
+OfferCard.displayName = 'OfferCard';
+
+export { OfferCard };

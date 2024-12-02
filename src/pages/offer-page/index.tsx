@@ -1,18 +1,17 @@
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/types';
-import { useActions } from '../../store/hooks';
+import { useActions, useAppSelector } from '../../hooks';
 import { useEffect } from 'react';
 import { PageLayout, Header, OfferDetails, NearbyOffers } from '../../components';
 import { AppRoute } from '../../constants';
 import { useNavigate } from 'react-router-dom';
 import { Spinner } from '../../components';
+import { selectOfferDetailsData } from '../../store/selectors';
 
 export const OfferPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { fetchOfferDetails } = useActions();
-  const { offer, isLoading, error } = useSelector((state: RootState) => state.offerDetails);
+  const { offer, isLoading, error } = useAppSelector(selectOfferDetailsData);
 
   useEffect(() => {
     if (!id) {

@@ -1,15 +1,14 @@
 import { CitiesList, CityOffers } from '../../components';
 import { CITIES } from '../../constants';
-import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { RootState } from '../../store/types';
-import { useActions } from '../../store/hooks';
+import { useActions, useAppSelector } from '../../hooks';
 import { PageLayout, Header, Spinner } from '../../components';
+import { selectCommonData, selectOffersData } from '../../store/selectors';
 
 export const MainPage = () => {
   const { fetchOffers } = useActions();
-  const cityName = useSelector((state: RootState) => state.common.city);
-  const { offers, isLoading } = useSelector((state: RootState) => state.offers);
+  const cityName = useAppSelector(selectCommonData).city;
+  const { offers, isLoading } = useAppSelector(selectOffersData);
 
   useEffect(() => {
     fetchOffers();

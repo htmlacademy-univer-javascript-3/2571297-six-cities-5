@@ -1,12 +1,12 @@
 import { PageLayout, Header } from '../../components';
 import { LoginForm } from '../../components';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/types';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../constants';
+import { useAppSelector } from '../../hooks';
+import { selectCommonData } from '../../store/selectors';
 
 export const LoginPage = () => {
-  const currentCity = useSelector((state: RootState) => state.common.city);
+  const currentCity = useAppSelector(selectCommonData).city;
 
   return (
     <PageLayout pageClassName="page--gray page--login">

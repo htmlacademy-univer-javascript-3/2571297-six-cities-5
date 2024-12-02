@@ -1,8 +1,8 @@
-import { Fragment, useState } from 'react';
+import { useState, useMemo, Fragment } from 'react';
 import { CommentFormState } from './interfaces';
-import { getRatingTitle } from './utils';
-import { useActions } from '../../store/hooks';
+import { useActions } from '../../hooks';
 import { BaseOffer } from '../../types/offer';
+import { getRatingTitle } from './utils';
 
 const MIN_COMMENT_LENGTH = 50;
 const STARS = [5, 4, 3, 2, 1];
@@ -22,11 +22,13 @@ export const CommentForm = ({ offerId }: CommentFormProps) => {
 
   const [formData, setFormData] = useState<CommentFormState>(initialFormState);
 
-  const isSubmitDisabled = !formData.rating.length || formData.review.length < MIN_COMMENT_LENGTH || isSubmitting;
+  const isSubmitDisabled = useMemo(
+    () => !formData.rating.length || formData.review.length < MIN_COMMENT_LENGTH || isSubmitting,
+    [formData.rating.length, formData.review.length, isSubmitting]
+  );
 
   const handleFieldChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
-
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value,
@@ -65,7 +67,6 @@ export const CommentForm = ({ offerId }: CommentFormProps) => {
               type="radio"
               checked={formData.rating === rating.toString()}
               onChange={handleFieldChange}
-              disabled={isSubmitting}
             />
             <label
               htmlFor={`${rating}-stars`}

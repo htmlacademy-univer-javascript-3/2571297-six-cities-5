@@ -1,16 +1,15 @@
-import { useEffect, useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useEffect, useMemo, memo } from 'react';
 import { Offer } from '../../types/offer';
-import { Footer, OffersList, Spinner } from '../../components';
-import { AppRoute } from '../../constants';
+import { Footer, Spinner } from '../../components';
 import { PageLayout, Header } from '../../components';
-import { useActions } from '../../store/hooks';
-import { RootState } from '../../store/types';
+import { useActions, useAppSelector } from '../../hooks';
+import { selectFavoriteOffersData } from '../../store/selectors';
+import { FavoriteLocation } from '../../components/favorite-location';
+import { EmptyFavorites } from '../../components/empty-favorites';
 
-export const FavoritesPage = () => {
+const FavoritesPage = memo(() => {
   const { fetchFavorites } = useActions();
-  const { offers, isLoading } = useSelector((state: RootState) => state.favoriteOffers);
+  const { offers, isLoading } = useAppSelector(selectFavoriteOffersData);
 
   useEffect(() => {
     fetchFavorites();
@@ -35,38 +34,19 @@ export const FavoritesPage = () => {
 
   const pageContent = useMemo(() => {
     if (!offers?.length && !isLoading) {
-      return (
-        <section className="favorites favorites--empty">
-          <h1 className="visually-hidden">Favorites (empty)</h1>
-          <div className="favorites__status-wrapper">
-            <b className="favorites__status">Nothing yet saved.</b>
-            <p className="favorites__status-description">
-              Save properties to narrow down search or plan your future trips.
-            </p>
-          </div>
-        </section>
-      );
+      return <EmptyFavorites />;
     }
 
-    return isLoading ? (
-      <Spinner />
-    ) : (
+    if (isLoading) {
+      return <Spinner />;
+    }
+
+    return (
       <section className="favorites">
         <h1 className="favorites__title">Saved listing</h1>
         <ul className="favorites__list">
           {Object.entries(offersGroupedByCity).map(([cityName, cityOffers]) => (
-            <li className="favorites__locations-items" key={cityName}>
-              <div className="favorites__locations locations locations--current">
-                <div className="locations__item">
-                  <Link className="locations__item-link" to={AppRoute.Home}>
-                    <span>{cityName}</span>
-                  </Link>
-                </div>
-              </div>
-              <div className="favorites__places">
-                <OffersList offers={cityOffers} cardType="favorites" />
-              </div>
-            </li>
+            <FavoriteLocation key={cityName} cityName={cityName} offers={cityOffers} />
           ))}
         </ul>
       </section>
@@ -82,4 +62,8 @@ export const FavoritesPage = () => {
       <Footer />
     </PageLayout>
   );
-};
+});
+
+FavoritesPage.displayName = 'FavoritesPage';
+
+export { FavoritesPage };

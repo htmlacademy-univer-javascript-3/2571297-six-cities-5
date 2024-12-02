@@ -1,24 +1,23 @@
+import { memo, useEffect, useMemo } from 'react';
 import { OfferDetails } from '../../types/offer';
 import { OffersList } from '../offers-list';
 import { Map } from '../map';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/types';
-import { useActions } from '../../store/hooks';
-import { useEffect } from 'react';
+import { useActions, useAppSelector } from '../../hooks';
+import { selectNearbyOffersData } from '../../store/selectors';
 
-type NearbyOffersProps = {
+interface NearbyOffersProps {
   currentOffer: OfferDetails;
-};
+}
 
-export const NearbyOffers = ({ currentOffer }: NearbyOffersProps) => {
-  const { offers } = useSelector((state: RootState) => state.nearbyOffers);
+export const NearbyOffers = memo(({ currentOffer }: NearbyOffersProps) => {
+  const { offers } = useAppSelector(selectNearbyOffersData);
   const { fetchNearbyOffers } = useActions();
 
   useEffect(() => {
     fetchNearbyOffers({ offerId: currentOffer.id });
   }, [fetchNearbyOffers, currentOffer.id]);
 
-  const slicedOffers = offers.slice(0, 3);
+  const slicedOffers = useMemo(() => offers.slice(0, 3), [offers]);
 
   return (
     <>
@@ -33,4 +32,6 @@ export const NearbyOffers = ({ currentOffer }: NearbyOffersProps) => {
       </div>
     </>
   );
-};
+});
+
+NearbyOffers.displayName = 'NearbyOffers';
