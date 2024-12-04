@@ -1,12 +1,12 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { api } from '../services/api';
-import { offersReducer } from './reducers/offers';
-import { authReducer } from './reducers/auth';
-import { commonReducer } from './reducers/common';
-import { commentsReducer } from './reducers/comments';
-import { offerDetailsReducer } from './reducers/offer-details';
-import { nearbyOffersReducer } from './reducers/nearby-offers';
-import { favoriteOffersReducer } from './reducers/favorite-offers';
+import { offersReducer } from './offers';
+import { authReducer } from './auth';
+import { commonReducer } from './common';
+import { commentsReducer } from './comments';
+import { offerDetailsReducer } from './offer-details';
+import { nearbyOffersReducer } from './nearby-offers';
+import { favoriteOffersReducer } from './favorite-offers';
 
 const rootReducer = combineReducers({
   common: commonReducer,

@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Comment } from '../../types/comment';
 import { ReviewItem } from '../review-item';
 
@@ -5,8 +6,12 @@ interface ReviewsListProps {
   comments: Comment[];
 }
 
-export const ReviewsList = (props: ReviewsListProps) => {
+const ReviewsList = memo((props: ReviewsListProps) => {
   const { comments } = props;
+
+  if (!comments.length) {
+    return null;
+  }
 
   return (
     <ul className="reviews__list">
@@ -15,4 +20,8 @@ export const ReviewsList = (props: ReviewsListProps) => {
       ))}
     </ul>
   );
-};
+});
+
+ReviewsList.displayName = 'ReviewsList';
+
+export { ReviewsList };

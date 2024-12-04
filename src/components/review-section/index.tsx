@@ -1,17 +1,16 @@
-import { useSelector } from 'react-redux';
 import { CommentForm } from '../comment-form';
 import { ReviewsList } from '../reviews-list';
-import { RootState } from '../../store/types';
-import { useActions } from '../../store/hooks';
+import { useActions, useAppSelector } from '../../hooks';
 import { BaseOffer } from '../../types/offer';
 import { useEffect } from 'react';
+import { selectCommentsData } from '../../store/selectors';
 
 type ReviewSectionProps = {
   offerId: BaseOffer['id'];
 };
 
 export const ReviewSection = ({ offerId }: ReviewSectionProps) => {
-  const { comments } = useSelector((state: RootState) => state.comments);
+  const { comments } = useAppSelector(selectCommentsData);
   const { fetchComments } = useActions();
 
   useEffect(() => {

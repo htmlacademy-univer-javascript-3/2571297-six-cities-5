@@ -1,16 +1,15 @@
 import { FormEvent, useState, useEffect } from 'react';
-import { useActions } from '../../store/hooks';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/types';
+import { useActions, useAppSelector } from '../../hooks';
 import { useNavigate } from 'react-router-dom';
 import { AppRoute, AuthStatus } from '../../constants';
 import { LoginFormState } from './interfaces';
+import { selectAuthData } from '../../store/selectors';
 import './styles.css';
 
 export const LoginForm = () => {
   const { login } = useActions();
   const navigate = useNavigate();
-  const { authorizationStatus, error } = useSelector((state: RootState) => state.auth);
+  const { authorizationStatus, error } = useAppSelector(selectAuthData);
 
   const initialFormState: LoginFormState = {
     email: '',

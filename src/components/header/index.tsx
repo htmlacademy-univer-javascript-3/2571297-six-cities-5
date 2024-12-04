@@ -3,8 +3,8 @@ import { AppRoute, AuthStatus } from '../../constants';
 import { UserNavigation } from '../user-navigation';
 import { SignOutButton } from '../sign-out-button';
 import { SignInButton } from '../sign-in-button';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/types';
+import { useAppSelector } from '../../hooks';
+import { selectAuthData } from '../../store/selectors';
 
 interface HeaderProps {
   isNavVisible?: boolean;
@@ -12,7 +12,7 @@ interface HeaderProps {
 }
 
 export const Header = ({ isNavVisible = true, showUserNav = true }: HeaderProps) => {
-  const authorizationStatus = useSelector((state: RootState) => state.auth.authorizationStatus);
+  const { authorizationStatus } = useAppSelector(selectAuthData);
 
   return (
     <header className="header">

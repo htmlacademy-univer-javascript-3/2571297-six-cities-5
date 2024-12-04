@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/types';
 import { AppRoute } from '../../constants';
+import { useAppSelector } from '../../hooks';
+import { selectAuthData, selectFavoriteOffersData } from '../../store/selectors';
 
 export const UserNavigation = () => {
-  const favoriteOffers = useSelector((state: RootState) => state.favoriteOffers.offers);
-  const { user } = useSelector((state: RootState) => state.auth);
+  const favoriteOffers = useAppSelector(selectFavoriteOffersData).offers;
+  const { user } = useAppSelector(selectAuthData);
 
   return (
     <li className="header__nav-item user">

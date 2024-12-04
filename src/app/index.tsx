@@ -8,14 +8,13 @@ import { PrivateRoute } from '../components';
 import { AppRoute, AuthStatus } from '../constants';
 import { Provider } from 'react-redux';
 import { store } from '../store';
-import { useActions } from '../store/hooks';
+import { useActions, useAppSelector } from '../hooks';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store/types';
+import { selectAuthData } from '../store/selectors';
 
 const AppContent = () => {
   const { checkAuth, fetchFavorites } = useActions();
-  const authorizationStatus = useSelector((state: RootState) => state.auth.authorizationStatus);
+  const { authorizationStatus } = useAppSelector(selectAuthData);
 
   useEffect(() => {
     checkAuth();

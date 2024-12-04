@@ -1,5 +1,5 @@
 import { Dispatch } from '@reduxjs/toolkit';
-import { store } from './index';
+import { store } from '../store';
 import { AxiosInstance } from 'axios';
 import { RequestError } from '../types/error';
 
