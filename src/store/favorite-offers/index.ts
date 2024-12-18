@@ -36,11 +36,14 @@ const favoriteOffersSlice = createSlice({
         state.error = action.payload ?? DEFAULT_REQUEST_ERROR;
       })
       .addCase(toggleFavorite.fulfilled, (state, action) => {
-        const updatedOffer = action.payload;
-        if (updatedOffer.isFavorite) {
-          state.offers.push(updatedOffer);
+        const toggledOffer = action.payload;
+        if (toggledOffer.isFavorite) {
+          state.offers.push({
+            ...toggledOffer,
+            previewImage: 'previewImage' in toggledOffer ? toggledOffer.previewImage : toggledOffer.images[0],
+          } as Offer);
         } else {
-          state.offers = state.offers.filter((offer) => offer.id !== updatedOffer.id);
+          state.offers = state.offers.filter((offer) => offer.id !== toggledOffer.id);
         }
         state.error = null;
       })

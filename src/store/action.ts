@@ -60,11 +60,11 @@ export const fetchFavorites = createAsyncThunk<Offer[], void, ThunkConfig>(
   }
 );
 
-export const toggleFavorite = createAsyncThunk<Offer, { offerId: string; status: number }, ThunkConfig>(
+export const toggleFavorite = createAsyncThunk<Offer | OfferDetails, { offerId: string; status: number }, ThunkConfig>(
   Actions.TOGGLE_FAVORITE,
   async ({ offerId, status }, { rejectWithValue }) => {
     try {
-      const { data } = await api.post<Offer>(
+      const { data } = await api.post<Offer | OfferDetails>(
         ApiRoute.FavoriteStatus.replace(':offerId', offerId).replace(':status', String(status))
       );
       return data;
