@@ -52,8 +52,8 @@ export const CommentForm = ({ offerId }: CommentFormProps) => {
   };
 
   return (
-    <form className="reviews__form form" action="#" method="post" onSubmit={handleSubmit}>
-      <label className="reviews__label form__label" htmlFor="review">
+    <form className="reviews__form form" action="#" method="post" onSubmit={handleSubmit} data-testid="review-form">
+      <label className="reviews__label form__label" htmlFor="review" data-testid="review-label">
         Your review
       </label>
       <div className="reviews__rating-form form__rating">
@@ -67,6 +67,7 @@ export const CommentForm = ({ offerId }: CommentFormProps) => {
               type="radio"
               checked={formData.rating === rating.toString()}
               onChange={handleFieldChange}
+              data-testid={`rating-input-${rating}`}
             />
             <label
               htmlFor={`${rating}-stars`}
@@ -88,13 +89,19 @@ export const CommentForm = ({ offerId }: CommentFormProps) => {
         onChange={handleFieldChange}
         placeholder="Tell how was your stay, what you like and what can be improved"
         disabled={isSubmitting}
+        data-testid="review-textarea"
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
           To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay
           with at least <b className="reviews__text-amount">{MIN_COMMENT_LENGTH} characters</b>.
         </p>
-        <button className="reviews__submit form__submit button" type="submit" disabled={isSubmitDisabled}>
+        <button
+          className="reviews__submit form__submit button"
+          type="submit"
+          disabled={isSubmitDisabled}
+          data-testid="submit-button"
+        >
           Submit
         </button>
       </div>

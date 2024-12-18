@@ -57,6 +57,7 @@ const OfferCard = memo((props: OfferCardProps) => {
 
   return (
     <article
+      data-testid="offer-card"
       className={`${className}__card place-card`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
