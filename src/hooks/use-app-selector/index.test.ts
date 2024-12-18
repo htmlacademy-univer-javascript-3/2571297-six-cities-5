@@ -15,7 +15,7 @@ describe('useAppSelector', () => {
   });
 
   it('should return selected state', () => {
-    const mockState: RootState = {
+    const mockState = {
       auth: {
         authorizationStatus: AuthStatus.NoAuth,
         user: null,
@@ -23,12 +23,12 @@ describe('useAppSelector', () => {
         error: null,
       },
       favoriteOffers: {
-        offers: [],
+        offers: [] as RootState['favoriteOffers']['offers'],
         isLoading: false,
         error: null,
       },
       offers: {
-        offers: [],
+        offers: [] as RootState['offers']['offers'],
         isLoading: false,
         error: null,
       },
@@ -38,12 +38,12 @@ describe('useAppSelector', () => {
         error: null,
       },
       nearbyOffers: {
-        offers: [],
+        offers: [] as RootState['nearbyOffers']['offers'],
         isLoading: false,
         error: null,
       },
       comments: {
-        comments: [],
+        comments: [] as RootState['comments']['comments'],
         isLoading: false,
         error: null,
       },
@@ -51,7 +51,7 @@ describe('useAppSelector', () => {
         city: Cities.Paris,
         sortOption: SortOption.Popular,
       },
-    } as const;
+    } satisfies RootState;
 
     const selector = (state: RootState) => state.auth.user;
     const expectedResult = mockState.auth.user;

@@ -59,7 +59,8 @@ describe('Favorite Offers Reducer', () => {
         toggleFavorite.fulfilled(favoriteOffer, '', { offerId: '1', status: 1 })
       );
 
-      expect(result.offers).toContain(favoriteOffer);
+      expect(result.offers[0]).toEqual(favoriteOffer);
+      expect(result.offers).toHaveLength(1);
       expect(result.error).toBeNull();
     });
 

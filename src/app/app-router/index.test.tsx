@@ -7,6 +7,8 @@ import { AppRoute, AuthStatus, Cities, SortOption } from '../../constants';
 import { RootState } from '../../types/store';
 import { useAppSelector } from '../../hooks';
 import { AppRouter } from '.';
+import { Offer } from '../../types/offer';
+import { Comment } from '../../types/comment';
 
 vi.mock('../../pages/main-page', () => ({ MainPage: () => <div>Main Page</div> }));
 vi.mock('../../pages/login-page', () => ({ LoginPage: () => <div>Login Page</div> }));
@@ -39,12 +41,12 @@ const defaultState: RootState = {
     error: null,
   },
   favoriteOffers: {
-    offers: [],
+    offers: [] as Offer[],
     isLoading: false,
     error: null,
   },
   offers: {
-    offers: [],
+    offers: [] as Offer[],
     isLoading: false,
     error: null,
   },
@@ -54,12 +56,12 @@ const defaultState: RootState = {
     error: null,
   },
   nearbyOffers: {
-    offers: [],
+    offers: [] as Offer[],
     isLoading: false,
     error: null,
   },
   comments: {
-    comments: [],
+    comments: [] as Comment[],
     isLoading: false,
     error: null,
   },
