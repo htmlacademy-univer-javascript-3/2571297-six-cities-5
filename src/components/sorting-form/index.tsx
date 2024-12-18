@@ -13,32 +13,40 @@ const SortingForm = memo(() => {
     setIsOpened((prev) => !prev);
   }, []);
 
-  const handleSortOptionClick = useCallback((option: SortOption) => {
-    setSortOption(option);
-    setIsOpened(false);
-  }, [setSortOption]);
+  const handleSortOptionClick = useCallback(
+    (option: SortOption) => {
+      setSortOption(option);
+      setIsOpened(false);
+    },
+    [setSortOption]
+  );
 
   const currentSortText = useMemo(() => getSortOptionText(currentSort), [currentSort]);
 
-  const sortOptionsList = useMemo(() => (
-    <ul className="places__options places__options--custom places__options--opened">
-      {SORT_OPTIONS.map((option) => (
-        <li
-          key={option}
-          className={`places__option ${option === currentSort ? 'places__option--active' : ''}`}
-          tabIndex={0}
-          onClick={() => handleSortOptionClick(option)}
-        >
-          {getSortOptionText(option)}
-        </li>
-      ))}
-    </ul>
-  ), [currentSort, handleSortOptionClick]);
+  const sortOptionsList = useMemo(
+    () => (
+      <ul className="places__options places__options--custom places__options--opened">
+        {SORT_OPTIONS.map((option) => (
+          <li
+            key={option}
+            className={`places__option ${option === currentSort ? 'places__option--active' : ''}`}
+            tabIndex={0}
+            onClick={() => handleSortOptionClick(option)}
+            role="listitem"
+            aria-label={getSortOptionText(option)}
+          >
+            {getSortOptionText(option)}
+          </li>
+        ))}
+      </ul>
+    ),
+    [currentSort, handleSortOptionClick]
+  );
 
   return (
     <form className="places__sorting" action="#" method="get">
       <span className="places__sorting-caption">Sort by</span>{' '}
-      <span className="places__sorting-type" tabIndex={0} onClick={handleFormVisibleToggle}>
+      <span className="places__sorting-type" tabIndex={0} onClick={handleFormVisibleToggle} role="button">
         {currentSortText}
         <svg className="places__sorting-arrow" width="7" height="4">
           <use xlinkHref="#icon-arrow-select"></use>

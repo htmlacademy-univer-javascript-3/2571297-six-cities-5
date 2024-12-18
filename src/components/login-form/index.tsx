@@ -39,18 +39,20 @@ export const LoginForm = () => {
 
   return (
     <section className="login">
-      <h1 className="login__title">Sign in</h1>
-      <form className="login__form form" action="#" method="post" onSubmit={handleSubmit}>
+      <h1 className="login__title" data-testid="login-title">
+        Sign in
+      </h1>
+      <form className="login__form form" action="#" method="post" onSubmit={handleSubmit} data-testid="login-form">
         {error && (
           <>
-            {error.messages.map((message) => (
-              <div key={message} className="form__error-message">
+            {error.messages.map((message: string) => (
+              <div key={message} className="form__error-message" data-testid="error-message">
                 {message}
               </div>
             ))}
           </>
         )}
-        <div className="login__input-wrapper form__input-wrapper">
+        <div className="login__input-wrapper form__input-wrapper" data-testid="input-wrapper">
           <label className="visually-hidden">E-mail</label>
           <input
             className="login__input form__input"
@@ -59,9 +61,10 @@ export const LoginForm = () => {
             placeholder="Email"
             value={formData.email}
             onChange={handleInputChange}
+            data-testid="email-input"
           />
         </div>
-        <div className="login__input-wrapper form__input-wrapper">
+        <div className="login__input-wrapper form__input-wrapper" data-testid="input-wrapper">
           <label className="visually-hidden">Password</label>
           <input
             className="login__input form__input"
@@ -70,9 +73,10 @@ export const LoginForm = () => {
             placeholder="Password"
             value={formData.password}
             onChange={handleInputChange}
+            data-testid="password-input"
           />
         </div>
-        <button className="login__submit form__submit button" type="submit">
+        <button className="login__submit form__submit button" type="submit" data-testid="submit-button">
           Sign in
         </button>
       </form>
