@@ -1,7 +1,7 @@
 import { useEffect, useState, MutableRefObject, useRef } from 'react';
 import { Map, TileLayer } from 'leaflet';
-import { OfferCity } from '../types/offer';
-import { DEFAULT_ZOOM } from '../constants';
+import { OfferCity } from '../../types/offer';
+import { DEFAULT_ZOOM } from '../../constants';
 
 export const useMap = (mapRef: MutableRefObject<HTMLElement | null>, city: OfferCity | undefined): Map | null => {
   const [map, setMap] = useState<Map | null>(null);

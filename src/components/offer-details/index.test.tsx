@@ -78,7 +78,7 @@ describe('Component: OfferDetails', () => {
 
     // eslint-disable-next-line quotes
     expect(screen.getByText("What's inside")).toBeInTheDocument();
-    mockOfferDetails.goods.forEach((good) => {
+    mockOfferDetails.goods.forEach((good: string) => {
       expect(screen.getByText(good)).toBeInTheDocument();
     });
   });
@@ -137,7 +137,7 @@ describe('Component: OfferDetails', () => {
   it('should render all images in gallery', () => {
     renderOfferDetails();
 
-    mockOfferDetails.images.forEach((image) => {
+    mockOfferDetails.images.forEach((image: string) => {
       const img = screen.getByAltText('Photo studio');
       expect(img).toHaveAttribute('src', image);
     });

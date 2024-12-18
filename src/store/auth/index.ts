@@ -4,7 +4,7 @@ import { AuthStatus, DEFAULT_REQUEST_ERROR } from '../../constants';
 import { checkAuth, login, logout } from '../action';
 import { RequestError } from '../../types/error';
 
-type AuthState = {
+export type AuthState = {
   authorizationStatus: AuthStatus;
   user: UserData | null;
   isLoading: boolean;
