@@ -3,7 +3,7 @@ import { configureMockStore } from '@jedmao/redux-mock-store';
 import { Provider } from 'react-redux';
 import { vi } from 'vitest';
 import { MemoryRouter, Navigate, useLocation } from 'react-router-dom';
-import { AppRoute, AuthStatus, Cities, SortOption } from '../../constants';
+import { AppRoute, AuthStatus, Cities, DEFAULT_SORT_OPTION } from '../../constants';
 import { RootState } from '../../types/store';
 import { useAppSelector } from '../../hooks';
 import { AppRouter } from '.';
@@ -67,7 +67,8 @@ const defaultState: RootState = {
   },
   common: {
     city: Cities.Paris,
-    sortOption: SortOption.Popular,
+    sortOption: DEFAULT_SORT_OPTION,
+    isServerUnavailable: false,
   },
 } as const;
 

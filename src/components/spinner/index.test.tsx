@@ -13,7 +13,7 @@ describe('Component: Spinner', () => {
   });
 
   it('should render full page spinner when fullPage prop is true', () => {
-    const { container } = render(<Spinner fullPage />);
+    const { container } = render(<Spinner isFullPage />);
 
     expect(container.querySelector('.spinner-container')).toHaveClass('spinner-overlay');
     expect(container.querySelector('.spinner')).toBeInTheDocument();
@@ -33,7 +33,7 @@ describe('Component: Spinner', () => {
   });
 
   it('should have correct class names for overlay mode', () => {
-    const { container } = render(<Spinner fullPage />);
+    const { container } = render(<Spinner isFullPage />);
 
     const spinnerContainer = container.querySelector('.spinner-container');
     expect(spinnerContainer).toHaveClass('spinner-container', 'spinner-overlay');

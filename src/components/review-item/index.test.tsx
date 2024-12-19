@@ -28,11 +28,9 @@ describe('Component: ReviewItem', () => {
   it('should render review details correctly', () => {
     render(<ReviewItem comment={mockComment} />);
 
-    // Check user info
     expect(screen.getByText(mockComment.user.name)).toBeInTheDocument();
     expect(screen.getByAltText('Reviews avatar')).toHaveAttribute('src', mockComment.user.avatarUrl);
 
-    // Check review content
     expect(screen.getByText(mockComment.comment)).toBeInTheDocument();
     expect(screen.getByText('Mocked date')).toBeInTheDocument();
   });
@@ -41,7 +39,7 @@ describe('Component: ReviewItem', () => {
     render(<ReviewItem comment={mockComment} />);
 
     const ratingSpan = screen.getByText('Rating').previousSibling as HTMLElement;
-    expect(ratingSpan.style.width).toBe('80%'); // 4 * 20 from mocked calculateRating
+    expect(ratingSpan.style.width).toBe('80%');
   });
 
   it('should have correct structure', () => {

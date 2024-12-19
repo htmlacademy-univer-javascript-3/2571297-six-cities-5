@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { Offer } from '../../types/offer';
-import { fetchFavorites, logout, toggleFavorite } from '../action';
+import { fetchFavorites, toggleFavorite } from './actions';
+import { logout } from '../auth/actions';
 import { RequestError } from '../../types/error';
 import { DEFAULT_REQUEST_ERROR } from '../../constants';
 

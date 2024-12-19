@@ -1,14 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import { commonReducer } from './index';
-import { setActiveCity, setSortOption } from '../action';
-import { Cities, SortOption } from '../../constants';
+import { commonReducer, initialState } from './index';
+import { setActiveCity, setServerError, setSortOption } from './actions';
+import { Cities, DEFAULT_SORT_OPTION, SortOption } from '../../constants';
 
 describe('Common Reducer', () => {
-  const initialState = {
-    city: Cities.Paris,
-    sortOption: SortOption.Popular,
-  };
-
   describe('initial state', () => {
     it('should return initial state when passed empty action', () => {
       const result = commonReducer(undefined, { type: '' });
@@ -28,7 +23,8 @@ describe('Common Reducer', () => {
 
       expect(result).toEqual({
         city: newCity,
-        sortOption: SortOption.Popular,
+        sortOption: DEFAULT_SORT_OPTION,
+        isServerUnavailable: false,
       });
     });
 
@@ -38,7 +34,7 @@ describe('Common Reducer', () => {
 
       const result = commonReducer(currentState, setActiveCity(newCity));
 
-      expect(result.sortOption).toBe(SortOption.Popular);
+      expect(result.sortOption).toBe(DEFAULT_SORT_OPTION);
     });
   });
 
@@ -66,7 +62,7 @@ describe('Common Reducer', () => {
     it('should handle multiple sort option changes', () => {
       let state = { ...initialState };
 
-      expect(state.sortOption).toBe(SortOption.Popular);
+      expect(state.sortOption).toBe(DEFAULT_SORT_OPTION);
 
       state = commonReducer(state, setSortOption(SortOption.PriceHighToLow));
       expect(state.sortOption).toBe(SortOption.PriceHighToLow);
@@ -86,33 +82,48 @@ describe('Common Reducer', () => {
     it('should handle city change followed by sort option change', () => {
       let state = { ...initialState };
 
-      // Change city - should reset sort option to default
       state = commonReducer(state, setActiveCity(Cities.Amsterdam));
       expect(state).toEqual({
         city: Cities.Amsterdam,
-        sortOption: SortOption.Popular,
+        sortOption: DEFAULT_SORT_OPTION,
+        isServerUnavailable: false,
       });
 
-      // Change sort option - should only affect sort option
       state = commonReducer(state, setSortOption(SortOption.PriceHighToLow));
       expect(state).toEqual({
         city: Cities.Amsterdam,
         sortOption: SortOption.PriceHighToLow,
+        isServerUnavailable: false,
       });
     });
 
     it('should handle sort option change followed by city change', () => {
       let state = { ...initialState };
 
-      // Change sort option
       state = commonReducer(state, setSortOption(SortOption.PriceHighToLow));
       expect(state.sortOption).toBe(SortOption.PriceHighToLow);
 
-      // Change city - should reset sort option
       state = commonReducer(state, setActiveCity(Cities.Amsterdam));
       expect(state).toEqual({
         city: Cities.Amsterdam,
-        sortOption: SortOption.Popular,
+        sortOption: DEFAULT_SORT_OPTION,
+        isServerUnavailable: false,
+      });
+    });
+
+    it('should handle setServerError to true', () => {
+      const result = commonReducer(initialState, setServerError(true));
+      expect(result).toEqual({
+        ...initialState,
+        isServerUnavailable: true,
+      });
+    });
+
+    it('should handle setServerError to false', () => {
+      const result = commonReducer(initialState, setServerError(false));
+      expect(result).toEqual({
+        ...initialState,
+        isServerUnavailable: false,
       });
     });
   });

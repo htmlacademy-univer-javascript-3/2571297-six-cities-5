@@ -2,11 +2,12 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Mock } from 'vitest';
 import { CommentForm } from './';
-import { useActions } from '../../hooks';
+import { useActions, useAppSelector } from '../../hooks';
 import { ratingMap } from './constants';
 
 vi.mock('../../hooks', () => ({
   useActions: vi.fn(),
+  useAppSelector: vi.fn(),
 }));
 
 describe('CommentForm Component', () => {
@@ -17,6 +18,10 @@ describe('CommentForm Component', () => {
     vi.clearAllMocks();
     (useActions as Mock).mockReturnValue({
       postComment: mockPostComment,
+    });
+    (useAppSelector as Mock).mockReturnValue({
+      error: null,
+      isLoading: false,
     });
   });
 
@@ -108,5 +113,35 @@ describe('CommentForm Component', () => {
 
     expect((textarea as HTMLTextAreaElement).value).toBe('');
     expect((ratingInput as HTMLInputElement).checked).toBe(false);
+  });
+
+  it('should display error messages when they exist', () => {
+    const mockError = {
+      messages: ['Error message 1', 'Error message 2'],
+    };
+
+    (useAppSelector as Mock).mockReturnValue({
+      error: mockError,
+      isLoading: false,
+    });
+
+    render(<CommentForm offerId={mockOfferId} />);
+
+    mockError.messages.forEach((message) => {
+      expect(screen.getByText(message)).toBeInTheDocument();
+      expect(screen.getByText(message)).toHaveClass('form__error-message');
+    });
+  });
+
+  it('should disable form during submission', () => {
+    (useAppSelector as Mock).mockReturnValue({
+      error: null,
+      isLoading: true,
+    });
+
+    render(<CommentForm offerId={mockOfferId} />);
+
+    const submitButton = screen.getByTestId('submit-button');
+    expect(submitButton).toBeDisabled();
   });
 });

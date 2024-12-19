@@ -1,13 +1,12 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { CityOffers } from './index';
-import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
-import { commonReducer } from '../../store/common';
 import { mockOffer } from '../../mocks/offers';
-import { Cities, SortOption } from '../../constants';
+import { Cities, DEFAULT_SORT_OPTION } from '../../constants';
+import { useAppSelector } from '../../hooks';
+import { Mock } from 'vitest';
+import { Offer } from '../../types/offer';
 
-// Mock child components
 vi.mock('../offers-list', () => ({
   OffersList: ({ offers }: { offers: unknown[] }) => <div data-testid="offers-list">Offers: {offers.length}</div>,
 }));
@@ -20,6 +19,13 @@ vi.mock('../sorting-form', () => ({
   SortingForm: () => <div data-testid="sorting-form">Sorting Form</div>,
 }));
 
+vi.mock('../../hooks', () => ({
+  useAppSelector: vi.fn(),
+  useActions: vi.fn(),
+  useAppDispatch: vi.fn(),
+  useSorting: vi.fn().mockImplementation((offers: Offer[]) => offers),
+}));
+
 describe('CityOffers Component', () => {
   const mockOffers = [
     { ...mockOffer, id: '1' },
@@ -27,27 +33,16 @@ describe('CityOffers Component', () => {
     { ...mockOffer, id: '3' },
   ];
 
-  const createStore = (city = Cities.Paris) =>
-    configureStore({
-      reducer: {
-        common: commonReducer,
-      },
-      preloadedState: {
-        common: {
-          city,
-          sortOption: SortOption.Popular,
-        },
-      },
+  beforeEach(() => {
+    vi.clearAllMocks();
+    (useAppSelector as Mock).mockReturnValue({
+      city: Cities.Paris,
+      sortOption: DEFAULT_SORT_OPTION,
+      isServerUnavailable: false,
     });
+  });
 
-  const renderComponent = (offers = mockOffers) => {
-    const store = createStore();
-    return render(
-      <Provider store={store}>
-        <CityOffers offers={offers} />
-      </Provider>
-    );
-  };
+  const renderComponent = (offers = mockOffers) => render(<CityOffers offers={offers} />);
 
   it('should render offers count and city name', () => {
     renderComponent();
@@ -82,13 +77,13 @@ describe('CityOffers Component', () => {
   });
 
   it('should handle different city names', () => {
-    const store = createStore(Cities.Amsterdam);
-    render(
-      <Provider store={store}>
-        <CityOffers offers={mockOffers} />
-      </Provider>
-    );
+    (useAppSelector as Mock).mockReturnValue({
+      city: Cities.Amsterdam,
+      sortOption: DEFAULT_SORT_OPTION,
+      isServerUnavailable: false,
+    });
 
+    renderComponent();
     expect(screen.getByText(`${mockOffers.length} places to stay in ${Cities.Amsterdam}`)).toBeInTheDocument();
   });
 });

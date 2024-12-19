@@ -1,6 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { offersReducer } from './index';
-import { fetchOffers, toggleFavorite, logout } from '../action';
+import { fetchOffers } from './actions';
+import { logout } from '../auth/actions';
+import { toggleFavorite } from '../favorite-offers/actions';
 import { DEFAULT_REQUEST_ERROR } from '../../constants';
 import { mockOffer } from '../../mocks/offers';
 

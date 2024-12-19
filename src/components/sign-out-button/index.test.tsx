@@ -52,7 +52,6 @@ describe('Component: SignOutButton', () => {
     const { container } = renderSignOutButton();
     const link = screen.getByRole('link');
 
-    // Simulate click and verify the container still exists (no navigation occurred)
     fireEvent.click(link);
     expect(container.firstChild).toBeInTheDocument();
     expect(mockLogout).toHaveBeenCalled();

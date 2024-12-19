@@ -1,9 +1,9 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, Mock } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { Header } from './';
 import { AuthStatus } from '../../constants';
-import * as hooks from '../../hooks';
+import { useAppSelector } from '../../hooks';
 
 vi.mock('../user-navigation', () => ({
   UserNavigation: () => <div data-testid="user-navigation">User Navigation</div>,
@@ -17,9 +17,13 @@ vi.mock('../sign-in-button', () => ({
   SignInButton: () => <div data-testid="sign-in-button">Sign In</div>,
 }));
 
-describe('Header Component', () => {
-  const mockUseSelector = vi.spyOn(hooks, 'useAppSelector');
+vi.mock('../../hooks', () => ({
+  useActions: vi.fn(),
+  useAppDispatch: vi.fn(),
+  useAppSelector: vi.fn(),
+}));
 
+describe('Header Component', () => {
   const renderComponent = (props = {}) =>
     render(
       <MemoryRouter>
@@ -28,7 +32,7 @@ describe('Header Component', () => {
     );
 
   it('should render logo', () => {
-    mockUseSelector.mockReturnValue({ authorizationStatus: AuthStatus.NoAuth });
+    (useAppSelector as Mock).mockReturnValue({ authorizationStatus: AuthStatus.NoAuth });
     renderComponent();
 
     const logo = screen.getByRole('img');
@@ -37,7 +41,7 @@ describe('Header Component', () => {
   });
 
   it('should show sign-in button when unauthorized', () => {
-    mockUseSelector.mockReturnValue({ authorizationStatus: AuthStatus.NoAuth });
+    (useAppSelector as Mock).mockReturnValue({ authorizationStatus: AuthStatus.NoAuth });
     renderComponent();
 
     expect(screen.getByTestId('sign-in-button')).toBeInTheDocument();
@@ -46,7 +50,7 @@ describe('Header Component', () => {
   });
 
   it('should show user navigation and sign-out button when authorized', () => {
-    mockUseSelector.mockReturnValue({ authorizationStatus: AuthStatus.Auth });
+    (useAppSelector as Mock).mockReturnValue({ authorizationStatus: AuthStatus.Auth });
     renderComponent();
 
     expect(screen.getByTestId('user-navigation')).toBeInTheDocument();
@@ -55,14 +59,14 @@ describe('Header Component', () => {
   });
 
   it('should not show navigation when isNavVisible is false', () => {
-    mockUseSelector.mockReturnValue({ authorizationStatus: AuthStatus.Auth });
+    (useAppSelector as Mock).mockReturnValue({ authorizationStatus: AuthStatus.Auth });
     renderComponent({ isNavVisible: false });
 
     expect(screen.queryByRole('navigation')).not.toBeInTheDocument();
   });
 
   it('should not show user navigation when showUserNav is false', () => {
-    mockUseSelector.mockReturnValue({ authorizationStatus: AuthStatus.Auth });
+    (useAppSelector as Mock).mockReturnValue({ authorizationStatus: AuthStatus.Auth });
     renderComponent({ showUserNav: false });
 
     expect(screen.queryByTestId('user-navigation')).not.toBeInTheDocument();
@@ -71,7 +75,7 @@ describe('Header Component', () => {
   });
 
   it('should have correct structure', () => {
-    mockUseSelector.mockReturnValue({ authorizationStatus: AuthStatus.NoAuth });
+    (useAppSelector as Mock).mockReturnValue({ authorizationStatus: AuthStatus.NoAuth });
     renderComponent();
 
     expect(screen.getByRole('banner')).toHaveClass('header');

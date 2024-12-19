@@ -12,7 +12,7 @@ export const PrivateRoute = ({ children }: PrivateRouteProps): JSX.Element => {
   const { authorizationStatus } = useAppSelector(selectAuthData);
 
   if (authorizationStatus === AuthStatus.Unknown) {
-    return <Spinner fullPage />;
+    return <Spinner isFullPage />;
   }
 
   return authorizationStatus === AuthStatus.Auth ? children : <Navigate to={AppRoute.Login} />;

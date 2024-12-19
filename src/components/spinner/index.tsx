@@ -1,11 +1,11 @@
 import './styles.css';
 
 interface SpinnerProps {
-  fullPage?: boolean;
+  isFullPage?: boolean;
 }
 
-export const Spinner = ({ fullPage = false }: SpinnerProps) => (
-  <div className={`spinner-container ${fullPage ? 'spinner-overlay' : ''}`}>
+export const Spinner = ({ isFullPage = false }: SpinnerProps) => (
+  <div className={`spinner-container ${isFullPage ? 'spinner-overlay' : ''}`}>
     <div className="spinner">
       <div className="spinner__circle"></div>
     </div>

@@ -1,12 +1,18 @@
 import { PageLayout, Header } from '../../components';
 import { LoginForm } from '../../components';
 import { Link } from 'react-router-dom';
-import { AppRoute } from '../../constants';
-import { useAppSelector } from '../../hooks';
-import { selectCommonData } from '../../store/selectors';
+import { AppRoute, CITIES } from '../../constants';
+import { useMemo } from 'react';
+import { useActions } from '../../hooks';
 
 export const LoginPage = () => {
-  const currentCity = useAppSelector(selectCommonData).city;
+  const { setActiveCity } = useActions();
+
+  const randomCity = useMemo(() => CITIES[Math.floor(Math.random() * CITIES.length)], []);
+
+  const handleCityClick = () => {
+    setActiveCity(randomCity);
+  };
 
   return (
     <PageLayout pageClassName="page--gray page--login">
@@ -17,8 +23,8 @@ export const LoginPage = () => {
           <LoginForm />
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <Link className="locations__item-link" to={AppRoute.Home}>
-                <span>{currentCity}</span>
+              <Link className="locations__item-link" to={AppRoute.Home} onClick={handleCityClick}>
+                <span>{randomCity}</span>
               </Link>
             </div>
           </section>

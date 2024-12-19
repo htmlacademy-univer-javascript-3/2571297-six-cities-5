@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { Offer } from '../../types/offer';
-import { fetchNearbyOffers } from '../action';
+import { fetchNearbyOffers } from './actions';
 import { RequestError } from '../../types/error';
 import { DEFAULT_REQUEST_ERROR } from '../../constants';
 

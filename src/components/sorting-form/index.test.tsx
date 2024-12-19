@@ -3,7 +3,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { SortingForm } from './';
 import { Provider } from 'react-redux';
 import { configureMockStore } from '@jedmao/redux-mock-store';
-import { SortOption } from '../../constants';
+import { DEFAULT_SORT_OPTION, SortOption } from '../../constants';
 import { getSortOptionText } from '../../utils/sort';
 
 const mockStore = configureMockStore();
@@ -14,7 +14,7 @@ vi.mock('../../hooks', () => ({
     setSortOption: mockSetSortOption,
   }),
   useAppSelector: () => ({
-    sortOption: SortOption.Popular,
+    sortOption: DEFAULT_SORT_OPTION,
   }),
 }));
 
@@ -23,7 +23,7 @@ describe('Component: SortingForm', () => {
     const store = mockStore({
       common: {
         data: {
-          sortOption: SortOption.Popular,
+          sortOption: DEFAULT_SORT_OPTION,
         },
       },
     });
@@ -56,7 +56,6 @@ describe('Component: SortingForm', () => {
     const optionsList = screen.getByRole('list');
     expect(optionsList).toBeInTheDocument();
 
-    // Check if all sort options are displayed
     Object.values(SortOption).forEach((option) => {
       const optionElement = screen.getByRole('listitem', { name: getSortOptionText(option as SortOption) });
       expect(optionElement).toBeInTheDocument();
@@ -83,11 +82,9 @@ describe('Component: SortingForm', () => {
   it('should call setSortOption when option is selected', () => {
     renderSortingForm();
 
-    // Open the options list
     const sortButton = screen.getByRole('button', { name: getSortOptionText(SortOption.Popular) });
     fireEvent.click(sortButton);
 
-    // Click on a different option
     const newOption = screen.getByRole('listitem', { name: getSortOptionText(SortOption.PriceHighToLow) });
     fireEvent.click(newOption);
 
@@ -97,15 +94,12 @@ describe('Component: SortingForm', () => {
   it('should close options list after selection', () => {
     renderSortingForm();
 
-    // Open the options list
     const sortButton = screen.getByRole('button', { name: getSortOptionText(SortOption.Popular) });
     fireEvent.click(sortButton);
 
-    // Click on an option
     const option = screen.getByRole('listitem', { name: getSortOptionText(SortOption.PriceHighToLow) });
     fireEvent.click(option);
 
-    // Check if the list is closed
     const optionsList = screen.queryByRole('list');
     expect(optionsList).not.toBeInTheDocument();
   });

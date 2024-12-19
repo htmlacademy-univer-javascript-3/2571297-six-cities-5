@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import './styles.css';
 
 interface EmptyOffersProps {
   cityName: string;

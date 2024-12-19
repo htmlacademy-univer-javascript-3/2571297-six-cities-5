@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { Comment } from '../../types/comment';
-import { fetchComments, postComment } from '../action';
+import { fetchComments, postComment } from './actions';
 import { RequestError } from '../../types/error';
 import { DEFAULT_REQUEST_ERROR } from '../../constants';
 

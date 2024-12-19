@@ -5,7 +5,7 @@ import { mockOffer } from '../../mocks/offers';
 import { Provider } from 'react-redux';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { MemoryRouter } from 'react-router-dom';
-import { OfferCardType } from '../../types/offer';
+import { Offer, OfferCardType } from '../../types/offer';
 
 const mockStore = configureMockStore();
 const mockSetActiveOfferId = vi.fn();
@@ -24,6 +24,12 @@ vi.mock('../offer-card', () => ({
       Mock Card {offer.id} - {cardType}
     </div>
   ),
+}));
+
+vi.mock('../../hooks', () => ({
+  useSorting: vi.fn().mockImplementation((offers: Offer[]) => offers),
+  useAppSelector: vi.fn(),
+  useAppDispatch: vi.fn(),
 }));
 
 describe('Component: OffersList', () => {
@@ -80,7 +86,7 @@ describe('Component: OffersList', () => {
 
     const cards = screen.getAllByTestId('offer-card');
     cards.forEach((card, index) => {
-      card.click(); // Simulating hover through click in our mock
+      card.click();
       expect(mockSetActiveOfferId).toHaveBeenLastCalledWith(mockOffers[index].id);
     });
   });

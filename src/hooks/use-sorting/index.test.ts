@@ -5,7 +5,6 @@ import { Offer } from '../../types/offer';
 import { SortOption } from '../../constants';
 import { mockOffer } from '../../mocks/offers';
 
-// Mock redux hooks
 vi.mock('react-redux', () => ({
   useSelector: vi.fn(),
 }));

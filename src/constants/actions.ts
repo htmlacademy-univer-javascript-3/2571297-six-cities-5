@@ -1,23 +1,26 @@
-export const Actions: Record<string, string> = {
+export const Actions = {
   // Common Actions
-  SET_ACTIVE_CITY: 'SET_ACTIVE_CITY',
-  SET_SORT_OPTION: 'SET_SORT_OPTION',
+  SET_ACTIVE_CITY: 'common/setActiveCity',
+  SET_SORT_OPTION: 'common/setSortOption',
+  SET_SERVER_ERROR: 'common/setServerError',
 
   // Offers Actions
-  FETCH_OFFERS: 'FETCH_OFFERS',
-  FETCH_OFFER_DETAILS: 'FETCH_OFFER_DETAILS',
-  FETCH_NEARBY_OFFERS: 'FETCH_NEARBY_OFFERS',
+  FETCH_OFFERS: 'offers/fetchOffers',
+  FETCH_OFFER_DETAILS: 'offers/fetchOfferDetails',
 
   // Favorite Actions
-  FETCH_FAVORITES: 'FETCH_FAVORITES',
-  TOGGLE_FAVORITE: 'TOGGLE_FAVORITE',
+  FETCH_FAVORITES: 'favorites/fetchFavorites',
+  TOGGLE_FAVORITE: 'favorites/toggleFavorite',
+
+  // Nearby Offers Actions
+  FETCH_NEARBY_OFFERS: 'nearbyOffers/fetchNearbyOffers',
 
   // Comments Actions
-  FETCH_COMMENTS: 'FETCH_COMMENTS',
-  POST_COMMENT: 'POST_COMMENT',
+  FETCH_COMMENTS: 'comments/fetchComments',
+  POST_COMMENT: 'comments/postComment',
 
-  // User Actions
-  CHECK_AUTH: 'CHECK_AUTH',
-  LOGIN: 'LOGIN',
-  LOGOUT: 'LOGOUT',
-};
+  // Auth Actions
+  CHECK_AUTH: 'auth/checkAuth',
+  LOGIN: 'auth/login',
+  LOGOUT: 'auth/logout',
+} as const;
