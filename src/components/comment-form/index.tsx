@@ -1,10 +1,13 @@
 import { useState, useMemo, Fragment } from 'react';
 import { CommentFormState } from './interfaces';
-import { useActions } from '../../hooks';
+import { useActions, useAppSelector } from '../../hooks';
 import { BaseOffer } from '../../types/offer';
 import { getRatingTitle } from './utils';
+import './styles.css';
+import { selectCommentsData } from '../../store/selectors';
 
 const MIN_COMMENT_LENGTH = 50;
+const MAX_COMMENT_LENGTH = 300;
 const STARS = [5, 4, 3, 2, 1];
 
 type CommentFormProps = {
@@ -13,6 +16,7 @@ type CommentFormProps = {
 
 export const CommentForm = ({ offerId }: CommentFormProps) => {
   const { postComment } = useActions();
+  const { error } = useAppSelector(selectCommentsData);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const initialFormState = {
@@ -23,7 +27,11 @@ export const CommentForm = ({ offerId }: CommentFormProps) => {
   const [formData, setFormData] = useState<CommentFormState>(initialFormState);
 
   const isSubmitDisabled = useMemo(
-    () => !formData.rating.length || formData.review.length < MIN_COMMENT_LENGTH || isSubmitting,
+    () =>
+      !formData.rating.length ||
+      formData.review.length < MIN_COMMENT_LENGTH ||
+      formData.review.length > MAX_COMMENT_LENGTH ||
+      isSubmitting,
     [formData.rating.length, formData.review.length, isSubmitting]
   );
 
@@ -53,6 +61,15 @@ export const CommentForm = ({ offerId }: CommentFormProps) => {
 
   return (
     <form className="reviews__form form" action="#" method="post" onSubmit={handleSubmit} data-testid="review-form">
+      {error && (
+        <>
+          {error.messages.map((message: string) => (
+            <div key={message} className="form__error-message" data-testid="error-message">
+              {message}
+            </div>
+          ))}
+        </>
+      )}
       <label className="reviews__label form__label" htmlFor="review" data-testid="review-label">
         Your review
       </label>

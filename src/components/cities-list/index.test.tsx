@@ -1,65 +1,67 @@
-import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { CitiesList } from './index';
-import { Cities, SortOption } from '../../constants';
-import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
-import { commonReducer } from '../../store/common';
+import { useAppSelector, useActions } from '../../hooks';
+import { Cities, CITIES } from '../../constants';
+import { Mock } from 'vitest';
+import { MemoryRouter } from 'react-router-dom';
+
+vi.mock('../../hooks', () => ({
+  useAppSelector: vi.fn(),
+  useActions: vi.fn(),
+}));
 
 describe('CitiesList Component', () => {
-  const mockCities = [Cities.Paris, Cities.Amsterdam, Cities.Brussels];
+  const mockSetActiveCity = vi.fn();
 
-  const createStore = (initialCity = Cities.Paris) =>
-    configureStore({
-      reducer: {
-        common: commonReducer,
-      },
-      preloadedState: {
-        common: {
-          city: initialCity,
-          sortOption: SortOption.Popular,
-        },
-      },
-    });
+  beforeEach(() => {
+    vi.clearAllMocks();
+    (useActions as Mock).mockReturnValue({ setActiveCity: mockSetActiveCity });
+  });
 
-  const renderComponent = (cities = mockCities) => {
-    const store = createStore();
-    return render(
-      <Provider store={store}>
-        <CitiesList cities={cities} />
-      </Provider>
-    );
-  };
+  const renderWithRouter = (component: React.ReactNode) => render(<MemoryRouter>{component}</MemoryRouter>);
 
   it('should render all cities', () => {
-    renderComponent();
+    (useAppSelector as Mock).mockReturnValue({ city: Cities.Paris });
 
-    mockCities.forEach((city) => {
+    renderWithRouter(<CitiesList cities={CITIES} />);
+
+    CITIES.forEach((city) => {
       expect(screen.getByText(city)).toBeInTheDocument();
     });
   });
 
   it('should highlight active city', () => {
-    const store = createStore(Cities.Amsterdam);
-    render(
-      <Provider store={store}>
-        <CitiesList cities={mockCities} />
-      </Provider>
-    );
+    (useAppSelector as Mock).mockReturnValue({ city: Cities.Amsterdam });
+
+    renderWithRouter(<CitiesList cities={CITIES} />);
 
     const activeLink = screen.getByText(Cities.Amsterdam).closest('a');
     expect(activeLink).toHaveClass('tabs__item--active');
   });
 
+  it('should call setActiveCity when city is clicked', () => {
+    (useAppSelector as Mock).mockReturnValue({ city: Cities.Paris });
+
+    renderWithRouter(<CitiesList cities={CITIES} />);
+
+    fireEvent.click(screen.getByText(Cities.Amsterdam));
+    expect(mockSetActiveCity).toHaveBeenCalledWith(Cities.Amsterdam);
+  });
+
   it('should render correct number of cities', () => {
-    renderComponent();
+    (useAppSelector as Mock).mockReturnValue({ city: Cities.Paris });
+
+    renderWithRouter(<CitiesList cities={CITIES} />);
 
     const cityItems = screen.getAllByRole('listitem');
-    expect(cityItems).toHaveLength(mockCities.length);
+    expect(cityItems).toHaveLength(CITIES.length);
   });
 
   it('should have correct structure', () => {
-    renderComponent();
+    (useAppSelector as Mock).mockReturnValue({ city: Cities.Paris });
+
+    renderWithRouter(<CitiesList cities={CITIES} />);
 
     expect(screen.getByRole('list')).toHaveClass('locations__list', 'tabs__list');
     expect(screen.getByRole('list').parentElement).toHaveClass('locations', 'container');

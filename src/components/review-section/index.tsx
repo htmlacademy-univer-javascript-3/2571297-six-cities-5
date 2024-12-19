@@ -13,6 +13,8 @@ export const ReviewSection = ({ offerId }: ReviewSectionProps) => {
   const { comments } = useAppSelector(selectCommentsData);
   const { fetchComments } = useActions();
 
+  const orderedComments = [...comments].sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
+
   useEffect(() => {
     if (!offerId) {
       return;
@@ -25,7 +27,7 @@ export const ReviewSection = ({ offerId }: ReviewSectionProps) => {
       <h2 className="reviews__title">
         Reviews &middot; <span className="reviews__amount">{comments.length}</span>
       </h2>
-      <ReviewsList comments={comments} />
+      <ReviewsList comments={orderedComments.slice(0, 10)} />
       <CommentForm offerId={offerId} />
     </section>
   );

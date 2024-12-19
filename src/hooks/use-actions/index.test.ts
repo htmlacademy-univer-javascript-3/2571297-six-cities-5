@@ -1,19 +1,64 @@
 import { renderHook } from '@testing-library/react';
 import { useActions } from './';
 import { useDispatch } from 'react-redux';
-import * as actions from '../../store/action';
+import * as authActions from '../../store/auth/actions';
+import * as commonActions from '../../store/common/actions';
+import * as offersActions from '../../store/offers/actions';
+import * as nearbyOffersActions from '../../store/nearby-offers/actions';
+import * as offerDetailsActions from '../../store/offer-details/actions';
+import * as favoriteOffersActions from '../../store/favorite-offers/actions';
+import * as commentsActions from '../../store/comments/actions';
 import { vi } from 'vitest';
+
+vi.mock('../../store/auth/actions', () => ({
+  checkAuth: vi.fn(),
+  login: vi.fn(),
+  logout: vi.fn(),
+}));
+
+vi.mock('../../store/common/actions', () => ({
+  setServerError: vi.fn(),
+  setActiveCity: vi.fn(),
+  setSortOption: vi.fn(),
+}));
+
+vi.mock('../../store/offers/actions', () => ({
+  fetchOffers: vi.fn(),
+}));
+
+vi.mock('../../store/nearby-offers/actions', () => ({
+  fetchNearbyOffers: vi.fn(),
+}));
+
+vi.mock('../../store/offer-details/actions', () => ({
+  fetchOfferDetails: vi.fn(),
+}));
+
+vi.mock('../../store/favorite-offers/actions', () => ({
+  fetchFavorits: vi.fn(),
+  toggleFavorite: vi.fn(),
+}));
+
+vi.mock('../../store/comments/actions', () => ({
+  fetchComments: vi.fn(),
+  postComment: vi.fn(),
+}));
 
 vi.mock('react-redux', () => ({
   useDispatch: vi.fn(),
 }));
 
-vi.mock('../../store/action', () => ({
-  checkAuth: vi.fn(),
-  fetchOffers: vi.fn(),
-}));
-
 describe('useActions', () => {
+  const actions = {
+    ...authActions,
+    ...commonActions,
+    ...offersActions,
+    ...nearbyOffersActions,
+    ...offerDetailsActions,
+    ...favoriteOffersActions,
+    ...commentsActions,
+  };
+
   beforeEach(() => {
     vi.clearAllMocks();
   });

@@ -2,14 +2,17 @@ import { describe, expect, it, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { UserNavigation } from './';
 import { MemoryRouter } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { configureMockStore } from '@jedmao/redux-mock-store';
 import { AppRoute } from '../../constants';
 import { UserData } from '../../types/auth';
-import { mockOffer } from '../../mocks/offers';
-import { RootState } from '../../types/store';
+import { useAppSelector } from '../../hooks';
+import { Mock } from 'vitest';
 
-const mockStore = configureMockStore<RootState>();
+vi.mock('../../hooks', () => ({
+  useAppSelector: vi.fn(),
+  useActions: vi.fn(() => ({
+    fetchFavorites: vi.fn(),
+  })),
+}));
 
 describe('Component: UserNavigation', () => {
   const mockUser: UserData = {
@@ -19,46 +22,35 @@ describe('Component: UserNavigation', () => {
     token: 'token',
   };
 
-  let store: ReturnType<typeof mockStore>;
-
-  const renderUserNavigation = (favoriteCount = 0, user: UserData | undefined = mockUser) => {
-    store = mockStore({
-      favoriteOffers: {
-        offers: Array(favoriteCount).fill(mockOffer),
-        isLoading: false,
-        error: null,
-      },
-      auth: {
-        user,
-        isLoading: false,
-        error: null,
-      },
-    });
-
-    return render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <UserNavigation />
-        </MemoryRouter>
-      </Provider>
+  const renderUserNavigation = () =>
+    render(
+      <MemoryRouter>
+        <UserNavigation />
+      </MemoryRouter>
     );
-  };
 
   beforeEach(() => {
-    store?.clearActions();
+    vi.clearAllMocks();
+    (useAppSelector as Mock).mockReturnValue({
+      user: mockUser,
+      offers: [],
+    });
   });
 
   it('should render user info correctly when authenticated', () => {
     renderUserNavigation();
-
     expect(screen.getByText(mockUser.email)).toBeInTheDocument();
     expect(screen.getByAltText('User avatar')).toHaveAttribute('src', mockUser.avatarUrl);
   });
 
   it('should display correct favorites count when authenticated', () => {
     const favoriteCount = 5;
-    renderUserNavigation(favoriteCount);
+    (useAppSelector as Mock).mockReturnValue({
+      user: mockUser,
+      offers: Array(favoriteCount).fill({}),
+    });
 
+    renderUserNavigation();
     expect(screen.getByText(favoriteCount.toString())).toHaveClass('header__favorite-count');
   });
 
@@ -79,39 +71,32 @@ describe('Component: UserNavigation', () => {
   });
 
   it('should not render anything when user is not authenticated', () => {
-    store = mockStore({
-      favoriteOffers: {
-        offers: [],
-        isLoading: false,
-        error: null,
-      },
-      auth: {
-        user: undefined,
-        isLoading: false,
-        error: null,
-      },
+    (useAppSelector as Mock).mockReturnValue({
+      user: null,
+      offers: [],
     });
 
-    const { container } = render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <UserNavigation />
-        </MemoryRouter>
-      </Provider>
-    );
-
+    const { container } = renderUserNavigation();
     expect(container.firstChild).toBeNull();
   });
 
   it('should handle empty email when authenticated', () => {
-    renderUserNavigation(0, { ...mockUser, email: '' });
+    (useAppSelector as Mock).mockReturnValue({
+      user: { ...mockUser, email: '' },
+      offers: [],
+    });
 
+    renderUserNavigation();
     expect(screen.queryByText(mockUser.email)).not.toBeInTheDocument();
   });
 
   it('should render zero favorites count when authenticated', () => {
-    renderUserNavigation(0);
+    (useAppSelector as Mock).mockReturnValue({
+      user: mockUser,
+      offers: [],
+    });
 
+    renderUserNavigation();
     expect(screen.getByText('0')).toHaveClass('header__favorite-count');
   });
 });

@@ -12,7 +12,6 @@ const mockStore = configureMockStore();
 const mockToggleFavorite = vi.fn();
 const mockNavigate = vi.fn();
 
-// Create test offers with known favorite status and specific id
 const testOffer = {
   ...mockOffer,
   id: '1',
@@ -33,7 +32,6 @@ vi.mock('react-router-dom', async () => {
   };
 });
 
-// Mock useAppSelector separately to control its return value
 const mockUseAppSelector = vi.fn(() => ({
   authorizationStatus: AuthStatus.NoAuth,
 }));
@@ -61,7 +59,6 @@ describe('Component: OfferCard', () => {
       },
     });
 
-    // Update useAppSelector mock for each render
     mockUseAppSelector.mockReturnValue({
       authorizationStatus: authStatus,
     });
@@ -114,7 +111,6 @@ describe('Component: OfferCard', () => {
   });
 
   it('should toggle favorite status when authorized user clicks favorite button', () => {
-    // Test toggling non-favorite offer
     renderOfferCard(testOffer, AuthStatus.Auth);
     const nonFavoriteButton = screen.getByRole('button', { name: /to bookmarks/i });
     fireEvent.click(nonFavoriteButton);
@@ -123,11 +119,9 @@ describe('Component: OfferCard', () => {
       status: 1,
     });
 
-    // Clear mocks between tests
     mockToggleFavorite.mockClear();
     mockUseAppSelector.mockClear();
 
-    // Test toggling favorite offer
     renderOfferCard(favoriteOffer, AuthStatus.Auth);
     const favoriteButton = screen.getByRole('button', { name: /in bookmarks/i });
     fireEvent.click(favoriteButton);

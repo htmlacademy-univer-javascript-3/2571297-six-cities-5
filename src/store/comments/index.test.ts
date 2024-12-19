@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { commentsReducer } from './index';
-import { fetchComments, postComment } from '../action';
+import { fetchComments, postComment } from './actions';
 import { DEFAULT_REQUEST_ERROR } from '../../constants';
 import { Comment } from '../../types/comment';
 import { mockComment } from '../../mocks/comments';

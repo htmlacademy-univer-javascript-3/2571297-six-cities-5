@@ -8,12 +8,10 @@ import { AuthStatus, AppRoute } from '../../constants';
 
 const mockStore = configureMockStore();
 
-// Mock the entire module
 vi.mock('../spinner', () => ({
   Spinner: () => <div data-testid="spinner">Loading</div>,
 }));
 
-// Mock useAppSelector separately to control its return value
 const mockUseAppSelector = vi.fn(() => ({
   authorizationStatus: AuthStatus.NoAuth,
 }));

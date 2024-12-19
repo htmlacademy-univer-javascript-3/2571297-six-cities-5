@@ -1,15 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { Cities, SortOption, DEFAULT_SORT_OPTION } from '../../constants';
-import { setSortOption, setActiveCity } from '../action';
+import { setSortOption, setActiveCity, setServerError } from './actions';
 
 type CommonState = {
   city: Cities;
   sortOption: SortOption;
+  isServerUnavailable: boolean;
 };
 
-const initialState: CommonState = {
+export const initialState: CommonState = {
   city: Cities.Paris,
   sortOption: DEFAULT_SORT_OPTION,
+  isServerUnavailable: false,
 };
 
 const commonSlice = createSlice({
@@ -24,6 +26,9 @@ const commonSlice = createSlice({
       })
       .addCase(setSortOption, (state, action) => {
         state.sortOption = action.payload;
+      })
+      .addCase(setServerError, (state, action) => {
+        state.isServerUnavailable = action.payload;
       });
   },
 });

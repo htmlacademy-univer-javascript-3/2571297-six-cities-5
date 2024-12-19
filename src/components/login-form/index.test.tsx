@@ -12,7 +12,6 @@ const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 const mockLogin = vi.fn();
 
-// Mock the useAppSelector hook directly
 const mockSelector = vi.fn(() => ({
   authorizationStatus: AuthStatus.NoAuth,
   error: null as RequestError | null,
@@ -27,7 +26,6 @@ vi.mock('../../hooks', () => ({
 
 describe('Component: LoginForm', () => {
   const renderLoginForm = (authStatus = AuthStatus.NoAuth, error: RequestError | null = null) => {
-    // Update both store and selector
     mockSelector.mockReturnValue({
       authorizationStatus: authStatus,
       error,
@@ -101,7 +99,6 @@ describe('Component: LoginForm', () => {
     ];
     const mockError: RequestError = { status: 400, messages: errorMessages };
 
-    // Update both store and selector with error state
     mockSelector.mockReturnValue({
       authorizationStatus: AuthStatus.NoAuth,
       error: mockError,

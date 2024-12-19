@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { UserData } from '../../types/auth';
 import { AuthStatus, DEFAULT_REQUEST_ERROR } from '../../constants';
-import { checkAuth, login, logout } from '../action';
+import { checkAuth, login, logout } from './actions';
 import { RequestError } from '../../types/error';
 
 export type AuthState = {
@@ -39,6 +39,7 @@ const authSlice = createSlice({
         state.authorizationStatus = AuthStatus.NoAuth;
         state.user = null;
         state.isLoading = false;
+        state.error = null;
       })
       .addCase(login.pending, (state) => {
         state.authorizationStatus = AuthStatus.Unknown;

@@ -3,7 +3,7 @@ import { useAppSelector } from './';
 import { useSelector } from 'react-redux';
 import { vi } from 'vitest';
 import { RootState } from '../../types/store';
-import { AuthStatus, Cities, SortOption } from '../../constants';
+import { AuthStatus, Cities, DEFAULT_SORT_OPTION } from '../../constants';
 
 vi.mock('react-redux', () => ({
   useSelector: vi.fn(),
@@ -49,9 +49,10 @@ describe('useAppSelector', () => {
       },
       common: {
         city: Cities.Paris,
-        sortOption: SortOption.Popular,
+        sortOption: DEFAULT_SORT_OPTION,
+        isServerUnavailable: false,
       },
-    } satisfies RootState;
+    } as RootState;
 
     const selector = (state: RootState) => state.auth.user;
     const expectedResult = mockState.auth.user;

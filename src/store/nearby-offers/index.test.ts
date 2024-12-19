@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { nearbyOffersReducer } from './index';
-import { fetchNearbyOffers } from '../action';
+import { fetchNearbyOffers } from './actions';
 import { DEFAULT_REQUEST_ERROR } from '../../constants';
 import { mockOffer } from '../../mocks/offers';
 
